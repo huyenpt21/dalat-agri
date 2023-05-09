@@ -1,9 +1,16 @@
 import { Breadcrumb, Layout, Menu } from "antd";
 import React from "react";
 import logo from "./image 2.png";
+import { Outlet, useNavigate } from "react-router-dom";
 const { Header, Content, Sider } = Layout;
 
 export default function LayoutMain() {
+  const navigate = useNavigate();
+  const handleClickMenu = (value) => {
+    if (value.key === "danh-muc-cay-trong") {
+      navigate(value.key);
+    }
+  };
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider>
@@ -24,13 +31,16 @@ export default function LayoutMain() {
         </div>
         <Menu
           theme="light"
-          defaultSelectedKeys={["1"]}
           mode="inline"
           items={[
-            { label: "Danh mục cây trồng", key: "1" },
+            {
+              label: "Danh mục cây trồng",
+              key: "danh-muc-cay-trong",
+            },
             { label: "Thông tin cây trồng", key: "2" },
             { label: "Nông hộ", key: "3" },
           ]}
+          onClick={handleClickMenu}
         />
       </Sider>
       <Layout className="site-layout">
@@ -39,8 +49,14 @@ export default function LayoutMain() {
         </Header>
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>Trang chủ</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            <Breadcrumb.Item
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              Trang chủ
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>Danh mục cây trồng</Breadcrumb.Item>
           </Breadcrumb>
           <div
             style={{
@@ -49,7 +65,7 @@ export default function LayoutMain() {
               background: "#9DE783",
             }}
           >
-            Bill is a cat.
+            <Outlet />
           </div>
         </Content>
       </Layout>

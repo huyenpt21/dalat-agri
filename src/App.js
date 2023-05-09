@@ -1,10 +1,15 @@
-import { BrowserRouter } from "react-router-dom";
-import RouterElement from "./router";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import DanhMucCayTrong from "./component/danhMuc CayTrong";
+import LayoutMain from "./component/layout";
 
 function App() {
   return (
     <BrowserRouter>
-      <RouterElement />
+      <Routes>
+        <Route path="/" element={<LayoutMain />}>
+          <Route path="danh-muc-cay-trong" element={<DanhMucCayTrong />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
