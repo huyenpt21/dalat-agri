@@ -27,6 +27,23 @@ aside.ant-layout-sider.ant-layout-sider-dark,
   color: #000;
 }
 
-.input-nhom-cay {
-  max-width: 30%;
+.select-label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.select-label .select-icon {
+  margin-right: 10px;
+  width: 14px;
+  font-weight: 700;
+}
+.group-select-add {
+  display: flex;
+  column-gap: 12px;
+  align-items: center;
 }

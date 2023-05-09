@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import DanhMucCayTrong from "./component/danhMuc CayTrong";
+import DanhMucCayTrong from "./component/danhMucCayTrong";
 import LayoutMain from "./component/layout";
 
 function App() {

@@ -1,6 +1,6 @@
 import { Breadcrumb, Layout, Menu } from "antd";
 import React from "react";
-import logo from "./image 2.png";
+import logo from "../../assets/image 2.png";
 import { Outlet, useNavigate } from "react-router-dom";
 const { Header, Content, Sider } = Layout;
 
