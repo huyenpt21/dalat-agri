@@ -4,6 +4,7 @@ import editIcon from "../../assets/Rectangle 2942.png";
 import addIcon from "../../assets/image 4.png";
 import deleteIcon from "../../assets/image 7.png";
 import { GIONG_CAY, LOAI_CAY, NHOM_CAY } from "./data";
+import ThemNhomCay from "../themNhomCay";
 
 export default function DanhMucCayTrong() {
   const { Option } = Select;
@@ -15,6 +16,7 @@ export default function DanhMucCayTrong() {
   });
   const [loaiCay, setLoaiCay] = useState([]);
   const [giongCay, setGiongCay] = useState([]);
+  const [modalThemNhomCay, setModalThemNhomCay] = useState(false);
 
   useEffect(() => {
     if (cayDuocChon.nhomCay !== "") {
@@ -55,6 +57,13 @@ export default function DanhMucCayTrong() {
   const handleChangeGiongCay = (value) => {
     setCayDuocChon({ nhomCay: "", loaiCay: "", giongCay: value });
   };
+  const handleCancleModalNhomCay = () => {
+    setModalThemNhomCay(false);
+  };
+  const handleSaveModalNhomCay = (value) => {
+    console.log(value);
+    setModalThemNhomCay(false);
+  };
   return (
     <div>
       <h2>Danh mục cây trồng</h2>
@@ -75,7 +84,14 @@ export default function DanhMucCayTrong() {
                 </Option>
               ))}
             </Select>
-            <img className="add-icon" src={addIcon} alt="" />
+            <img
+              className="add-icon"
+              src={addIcon}
+              alt=""
+              onClick={() => {
+                setModalThemNhomCay(true);
+              }}
+            />
           </div>
         </Col>
         <Col span={6}>
@@ -117,6 +133,11 @@ export default function DanhMucCayTrong() {
           </div>
         </Col>
       </Row>
+      <ThemNhomCay
+        open={modalThemNhomCay}
+        onCancel={handleCancleModalNhomCay}
+        onOk={handleSaveModalNhomCay}
+      />
     </div>
   );
 }
