@@ -26,3 +26,7 @@ aside.ant-layout-sider.ant-layout-sider-dark,
 .ant-layout-sider-trigger span {
   color: #000;
 }
+
+.input-nhom-cay {
+  max-width: 30%;
+}
