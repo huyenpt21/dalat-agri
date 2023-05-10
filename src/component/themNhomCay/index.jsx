@@ -40,7 +40,7 @@ export default function ThemNhomCay(props) {
           props.onCancel();
           form.resetFields();
         }}
-        title="Chỉnh sửa nhóm cây"
+        title="Thêm nhóm cây"
         width="800px"
         okText="Lưu thông tin"
         cancelText="Trở về"

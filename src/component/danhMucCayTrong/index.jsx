@@ -6,6 +6,7 @@ import deleteIcon from "../../assets/image 7.png";
 import ThemNhomCay from "../themNhomCay";
 import { GIONG_CAY, LOAI_CAY, NHOM_CAY } from "./data";
 import ThemLoaiCay from "../themLoaiCay";
+import ThemGionCay from "../themGiongCay";
 
 export default function DanhMucCayTrong() {
   const { Option } = Select;
@@ -28,7 +29,8 @@ export default function DanhMucCayTrong() {
   });
 
   const [modalThemNhomCay, setModalThemNhomCay] = useState(false);
-  const [modalThemLoaiCay, setModalThemLoaiCay] = useState(true);
+  const [modalThemLoaiCay, setModalThemLoaiCay] = useState(false);
+  const [modalThemGiongCay, setModalThemGiongCay] = useState(true);
 
   useEffect(() => {
     localStorage.setItem(
@@ -108,6 +110,7 @@ export default function DanhMucCayTrong() {
               style={{ width: "100%" }}
               onChange={handleChangeNhomCay}
               value={cayDuocChon.nhomCay}
+              allowClear
             >
               {danhSachCay.nhomCay.map((el) => (
                 <Option value={el.value}>
@@ -138,6 +141,7 @@ export default function DanhMucCayTrong() {
               style={{ width: "100%" }}
               onChange={handleChangeLoaiCay}
               value={cayDuocChon.loaiCay}
+              allowClear
             >
               {danhSachCayDuocChon.loaiCay.map((el) => (
                 <Option value={el.value}>
@@ -166,6 +170,7 @@ export default function DanhMucCayTrong() {
               style={{ width: "100%" }}
               onChange={handleChangeGiongCay}
               value={cayDuocChon.giongCay}
+              allowClear
             >
               {danhSachCayDuocChon.giongCay.map((el) => (
                 <Option value={el.value}>
@@ -179,7 +184,12 @@ export default function DanhMucCayTrong() {
                 </Option>
               ))}
             </Select>
-            <img className="add-icon" src={addIcon} alt="" />
+            <img
+              className="add-icon"
+              src={addIcon}
+              alt=""
+              onClick={() => setModalThemGiongCay(true)}
+            />
           </div>
         </Col>
       </Row>
@@ -191,6 +201,11 @@ export default function DanhMucCayTrong() {
         open={modalThemLoaiCay}
         onCancel={() => setModalThemLoaiCay(false)}
         nhomCay={cayDuocChon.nhomCay}
+      />
+      <ThemGionCay
+        open={modalThemGiongCay}
+        onCancel={() => setModalThemGiongCay(false)}
+        loaiCay={cayDuocChon.loaiCay}
       />
     </div>
   );
