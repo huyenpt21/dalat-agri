@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import editIcon from "../../assets/Rectangle 2942.png";
 import addIcon from "../../assets/image 4.png";
 import deleteIcon from "../../assets/image 7.png";
-import { GIONG_CAY, LOAI_CAY, NHOM_CAY } from "./data";
 import ThemNhomCay from "../themNhomCay";
+import { GIONG_CAY, LOAI_CAY, NHOM_CAY } from "./data";
 
 export default function DanhMucCayTrong() {
   const { Option } = Select;
@@ -57,13 +57,11 @@ export default function DanhMucCayTrong() {
   const handleChangeGiongCay = (value) => {
     setCayDuocChon({ nhomCay: "", loaiCay: "", giongCay: value });
   };
+
   const handleCancleModalNhomCay = () => {
     setModalThemNhomCay(false);
   };
-  const handleSaveModalNhomCay = (value) => {
-    console.log(value);
-    setModalThemNhomCay(false);
-  };
+
   return (
     <div>
       <h2>Danh mục cây trồng</h2>
@@ -136,7 +134,6 @@ export default function DanhMucCayTrong() {
       <ThemNhomCay
         open={modalThemNhomCay}
         onCancel={handleCancleModalNhomCay}
-        onOk={handleSaveModalNhomCay}
       />
     </div>
   );
