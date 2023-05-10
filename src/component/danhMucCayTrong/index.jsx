@@ -33,6 +33,7 @@ export default function DanhMucCayTrong() {
   const [modalThemLoaiCay, setModalThemLoaiCay] = useState(false);
   const [modalThemGiongCay, setModalThemGiongCay] = useState(false);
   const [isShowOption, setIsShowOption] = useState(false);
+  const [isShowOptionGiongCay, setIsShowOptionGiongCay] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(
@@ -71,6 +72,7 @@ export default function DanhMucCayTrong() {
   };
 
   const handleChangeLoaiCay = (value) => {
+    setIsShowOptionGiongCay(true);
     const giongCayTheoLoaiCay = danhSachCay.giongCay.filter((el) => {
       return el.type === value;
     });
@@ -101,6 +103,8 @@ export default function DanhMucCayTrong() {
     setModalThemNhomCay(false);
     setIsEdit(false);
   };
+
+  console.log(555, cayDuocChon);
 
   return (
     <div>
@@ -134,6 +138,7 @@ export default function DanhMucCayTrong() {
                           setIsShowOption(false);
                           setModalThemNhomCay(true);
                           setIsEdit(true);
+                          setIsShowOptionGiongCay(false);
                         }}
                       />
                     </span>
@@ -160,6 +165,10 @@ export default function DanhMucCayTrong() {
               onChange={handleChangeLoaiCay}
               value={cayDuocChon.loaiCay}
               allowClear
+              open={isShowOption}
+              onClick={() => {
+                setIsShowOption(true);
+              }}
             >
               {danhSachCayDuocChon.loaiCay.map((el) => (
                 <Option value={el.value}>
@@ -167,7 +176,18 @@ export default function DanhMucCayTrong() {
                     <span>{el.label}</span>
                     <span>
                       <img className="select-icon" src={deleteIcon} alt="" />
-                      <img className="select-icon" src={editIcon} alt="" />
+                      <img
+                        className="select-icon"
+                        src={editIcon}
+                        alt=""
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsShowOption(false);
+                          setIsEdit(true);
+                          setModalThemLoaiCay(true);
+                          setIsShowOptionGiongCay(false);
+                        }}
+                      />
                     </span>
                   </div>
                 </Option>
@@ -177,7 +197,10 @@ export default function DanhMucCayTrong() {
               className="add-icon"
               src={addIcon}
               alt=""
-              onClick={() => setModalThemLoaiCay(true)}
+              onClick={() => {
+                setModalThemLoaiCay(true);
+                setIsShowOption(false);
+              }}
             />
           </div>
         </Col>
@@ -189,6 +212,10 @@ export default function DanhMucCayTrong() {
               onChange={handleChangeGiongCay}
               value={cayDuocChon.giongCay}
               allowClear
+              open={isShowOptionGiongCay}
+              onClick={() => {
+                setIsShowOptionGiongCay(true);
+              }}
             >
               {danhSachCayDuocChon.giongCay.map((el) => (
                 <Option value={el.value}>
@@ -196,7 +223,18 @@ export default function DanhMucCayTrong() {
                     <span>{el.label}</span>
                     <span>
                       <img className="select-icon" src={deleteIcon} alt="" />
-                      <img className="select-icon" src={editIcon} alt="" />
+                      <img
+                        className="select-icon"
+                        src={editIcon}
+                        alt=""
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsShowOptionGiongCay(false);
+                          setIsEdit(true);
+                          setModalThemGiongCay(true);
+                          setIsShowOption(false);
+                        }}
+                      />
                     </span>
                   </div>
                 </Option>
@@ -221,6 +259,8 @@ export default function DanhMucCayTrong() {
         open={modalThemLoaiCay}
         onCancel={() => setModalThemLoaiCay(false)}
         nhomCay={cayDuocChon.nhomCay}
+        loaiCayId={cayDuocChon.loaiCay}
+        isEdit={isEdit}
       />
       <ThemGionCay
         open={modalThemGiongCay}
