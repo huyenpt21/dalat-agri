@@ -1,8 +1,8 @@
 import { Col, Row, Select } from "antd";
 import React, { useEffect, useState } from "react";
-import editIcon from "../../assets/Rectangle 2942.png";
+import deleteIcon from "../../assets/Rectangle 2942.png";
 import addIcon from "../../assets/image 4.png";
-import deleteIcon from "../../assets/image 7.png";
+import editIcon from "../../assets/image 7.png";
 import ThemNhomCay from "../themNhomCay";
 import { GIONG_CAY, LOAI_CAY, NHOM_CAY } from "./data";
 import ThemLoaiCay from "../themLoaiCay";
@@ -28,9 +28,10 @@ export default function DanhMucCayTrong() {
     giongCay: [],
   });
 
+  const [isEdit, setIsEdit] = useState(false);
   const [modalThemNhomCay, setModalThemNhomCay] = useState(false);
   const [modalThemLoaiCay, setModalThemLoaiCay] = useState(false);
-  const [modalThemGiongCay, setModalThemGiongCay] = useState(true);
+  const [modalThemGiongCay, setModalThemGiongCay] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(
@@ -97,6 +98,7 @@ export default function DanhMucCayTrong() {
 
   const handleCancleModalNhomCay = () => {
     setModalThemNhomCay(false);
+    setIsEdit(false);
   };
 
   return (
@@ -117,8 +119,16 @@ export default function DanhMucCayTrong() {
                   <div className="select-label">
                     <span>{el.label}</span>
                     <span>
-                      <img className="select-icon" src={editIcon} alt="" />
                       <img className="select-icon" src={deleteIcon} alt="" />
+                      <img
+                        className="select-icon"
+                        src={editIcon}
+                        alt=""
+                        onClick={() => {
+                          setModalThemNhomCay(true);
+                          setIsEdit(true);
+                        }}
+                      />
                     </span>
                   </div>
                 </Option>
@@ -148,8 +158,8 @@ export default function DanhMucCayTrong() {
                   <div className="select-label">
                     <span>{el.label}</span>
                     <span>
-                      <img className="select-icon" src={editIcon} alt="" />
                       <img className="select-icon" src={deleteIcon} alt="" />
+                      <img className="select-icon" src={editIcon} alt="" />
                     </span>
                   </div>
                 </Option>
@@ -177,8 +187,8 @@ export default function DanhMucCayTrong() {
                   <div className="select-label">
                     <span>{el.label}</span>
                     <span>
-                      <img className="select-icon" src={editIcon} alt="" />
                       <img className="select-icon" src={deleteIcon} alt="" />
+                      <img className="select-icon" src={editIcon} alt="" />
                     </span>
                   </div>
                 </Option>
@@ -196,6 +206,8 @@ export default function DanhMucCayTrong() {
       <ThemNhomCay
         open={modalThemNhomCay}
         onCancel={handleCancleModalNhomCay}
+        nhomCayId={cayDuocChon.nhomCay}
+        isEdit={isEdit}
       />
       <ThemLoaiCay
         open={modalThemLoaiCay}

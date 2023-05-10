@@ -1,5 +1,5 @@
 import { Form, Input, Modal } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ConfirmModal from "../confirmModal";
 import { useForm } from "antd/es/form/Form";
 
@@ -7,23 +7,48 @@ export default function ThemNhomCay(props) {
   const [modalConfirm, setModalConfirm] = useState(false);
   const [form] = useForm();
 
+  useEffect(() => {
+    const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
+    const thongTinNhomCay = danhSachCay.nhomCay.find((el) => {
+      return el.value === props.nhomCayId;
+    });
+    form.setFieldValue("nhomCay", thongTinNhomCay?.label);
+  }, [props.nhomCayId]);
+
   const handleSaveModalNhomCay = () => {
     setModalConfirm(true);
   };
 
   const handleConfirm = () => {
     const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
-    const danhSachCayMoi = {
-      ...danhSachCay,
-      nhomCay: [
-        ...danhSachCay.nhomCay,
-        {
-          label: form.getFieldValue("nhomCay"),
-          value: form.getFieldValue("nhomCay"),
-        },
-      ],
-    };
-    localStorage.setItem("danhSachCay", JSON.stringify(danhSachCayMoi));
+    if (props.isEdit) {
+      const thongTinNhomCay = danhSachCay.nhomCay.map((el) => {
+        if (el.value === props.nhomCayId) {
+          return {
+            label: form.getFieldValue("nhomCay"),
+            value: form.getFieldValue("nhomCay"),
+          };
+        }
+        return el;
+      });
+      const danhSachCayMoi = {
+        ...danhSachCay,
+        nhomCay: [...thongTinNhomCay],
+      };
+      localStorage.setItem("danhSachCay", JSON.stringify(danhSachCayMoi));
+    } else {
+      const danhSachCayMoi = {
+        ...danhSachCay,
+        nhomCay: [
+          ...danhSachCay.nhomCay,
+          {
+            label: form.getFieldValue("nhomCay"),
+            value: form.getFieldValue("nhomCay"),
+          },
+        ],
+      };
+      localStorage.setItem("danhSachCay", JSON.stringify(danhSachCayMoi));
+    }
     setModalConfirm(false);
     props.onCancel();
   };
