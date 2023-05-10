@@ -32,6 +32,7 @@ export default function DanhMucCayTrong() {
   const [modalThemNhomCay, setModalThemNhomCay] = useState(false);
   const [modalThemLoaiCay, setModalThemLoaiCay] = useState(false);
   const [modalThemGiongCay, setModalThemGiongCay] = useState(false);
+  const [isShowOption, setIsShowOption] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(
@@ -45,8 +46,8 @@ export default function DanhMucCayTrong() {
   }, []);
 
   useEffect(() => {
-    const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
-    setDanhSachCay(danhSachCay);
+    const danhSachCayLocal = JSON.parse(localStorage.getItem("danhSachCay"));
+    setDanhSachCay(danhSachCayLocal);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localStorage.getItem("danhSachCay")]);
 
@@ -113,6 +114,10 @@ export default function DanhMucCayTrong() {
               onChange={handleChangeNhomCay}
               value={cayDuocChon.nhomCay}
               allowClear
+              open={isShowOption}
+              onClick={() => {
+                setIsShowOption(true);
+              }}
             >
               {danhSachCay.nhomCay.map((el) => (
                 <Option value={el.value}>
@@ -124,7 +129,9 @@ export default function DanhMucCayTrong() {
                         className="select-icon"
                         src={editIcon}
                         alt=""
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsShowOption(false);
                           setModalThemNhomCay(true);
                           setIsEdit(true);
                         }}
@@ -140,6 +147,7 @@ export default function DanhMucCayTrong() {
               alt=""
               onClick={() => {
                 setModalThemNhomCay(true);
+                setIsShowOption(false);
               }}
             />
           </div>
