@@ -5,6 +5,7 @@ import addIcon from "../../assets/image 4.png";
 import deleteIcon from "../../assets/image 7.png";
 import ThemNhomCay from "../themNhomCay";
 import { GIONG_CAY, LOAI_CAY, NHOM_CAY } from "./data";
+import ThemLoaiCay from "../themLoaiCay";
 
 export default function DanhMucCayTrong() {
   const { Option } = Select;
@@ -14,48 +15,82 @@ export default function DanhMucCayTrong() {
     loaiCay: "",
     giongCay: "",
   });
-  const [loaiCay, setLoaiCay] = useState([]);
-  const [giongCay, setGiongCay] = useState([]);
+
+  const [danhSachCay, setDanhSachCay] = useState({
+    nhomCay: [],
+    loaiCay: [],
+    giongCay: [],
+  });
+
+  const [danhSachCayDuocChon, setDanhSachCayDuocChon] = useState({
+    loaiCay: [],
+    giongCay: [],
+  });
+
   const [modalThemNhomCay, setModalThemNhomCay] = useState(false);
+  const [modalThemLoaiCay, setModalThemLoaiCay] = useState(true);
 
   useEffect(() => {
-    if (cayDuocChon.nhomCay !== "") {
-      const loaiCayTheoNhomCay = LOAI_CAY.filter((el) => {
-        return el.type === cayDuocChon.nhomCay;
-      });
-      setLoaiCay([
-        ...loaiCayTheoNhomCay,
-        {
-          label: "Tất cả",
-          value: "Tất cả",
-        },
-      ]);
-    }
-    if (cayDuocChon.loaiCay !== "") {
-      const giongCayTheoLoaiCay = GIONG_CAY.filter((el) => {
-        return el.type === cayDuocChon.loaiCay;
-      });
+    localStorage.setItem(
+      "danhSachCay",
+      JSON.stringify({
+        nhomCay: NHOM_CAY,
+        loaiCay: LOAI_CAY,
+        giongCay: GIONG_CAY,
+      })
+    );
+  }, []);
 
-      setGiongCay([
-        ...giongCayTheoLoaiCay,
-        {
-          label: "Tất cả",
-          value: "Tất cả",
-        },
-      ]);
-    }
-  }, [cayDuocChon]);
+  useEffect(() => {
+    const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
+    setDanhSachCay(danhSachCay);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localStorage.getItem("danhSachCay")]);
 
   const handleChangeNhomCay = (value) => {
+    const loaiCayTheoNhomCay = danhSachCay.loaiCay.filter((el) => {
+      return el.type === value;
+    });
+    setDanhSachCayDuocChon((prev) => {
+      return {
+        ...prev,
+        loaiCay: [
+          {
+            label: "Tất cả",
+            value: "Tất cả",
+          },
+          ...loaiCayTheoNhomCay,
+        ],
+      };
+    });
     setCayDuocChon({ nhomCay: value, loaiCay: "", giongCay: "" });
   };
 
   const handleChangeLoaiCay = (value) => {
-    setCayDuocChon({ nhomCay: "", loaiCay: value, giongCay: "" });
+    const giongCayTheoLoaiCay = danhSachCay.giongCay.filter((el) => {
+      return el.type === value;
+    });
+    setDanhSachCayDuocChon((prev) => {
+      return {
+        ...prev,
+        giongCay: [
+          {
+            label: "Tất cả",
+            value: "Tất cả",
+          },
+          ...giongCayTheoLoaiCay,
+        ],
+      };
+    });
+    setCayDuocChon((prev) => {
+      return { ...prev, loaiCay: value, giongCay: "" };
+    });
   };
 
   const handleChangeGiongCay = (value) => {
-    setCayDuocChon({ nhomCay: "", loaiCay: "", giongCay: value });
+    setCayDuocChon((prev) => {
+      return { ...prev, giongCay: value };
+    });
   };
 
   const handleCancleModalNhomCay = () => {
@@ -69,8 +104,12 @@ export default function DanhMucCayTrong() {
         <Col span={6}>
           <div>Nhóm cây</div>
           <div className="group-select-add">
-            <Select style={{ width: "100%" }} onChange={handleChangeNhomCay}>
-              {NHOM_CAY.map((el) => (
+            <Select
+              style={{ width: "100%" }}
+              onChange={handleChangeNhomCay}
+              value={cayDuocChon.nhomCay}
+            >
+              {danhSachCay.nhomCay.map((el) => (
                 <Option value={el.value}>
                   <div className="select-label">
                     <span>{el.label}</span>
@@ -95,8 +134,12 @@ export default function DanhMucCayTrong() {
         <Col span={6}>
           <div>Loại cây</div>
           <div className="group-select-add">
-            <Select style={{ width: "100%" }} onChange={handleChangeLoaiCay}>
-              {loaiCay.map((el) => (
+            <Select
+              style={{ width: "100%" }}
+              onChange={handleChangeLoaiCay}
+              value={cayDuocChon.loaiCay}
+            >
+              {danhSachCayDuocChon.loaiCay.map((el) => (
                 <Option value={el.value}>
                   <div className="select-label">
                     <span>{el.label}</span>
@@ -108,14 +151,23 @@ export default function DanhMucCayTrong() {
                 </Option>
               ))}
             </Select>
-            <img className="add-icon" src={addIcon} alt="" />
+            <img
+              className="add-icon"
+              src={addIcon}
+              alt=""
+              onClick={() => setModalThemLoaiCay(true)}
+            />
           </div>
         </Col>
         <Col span={6}>
           <div>Giống cây</div>
           <div className="group-select-add">
-            <Select style={{ width: "100%" }} onChange={handleChangeGiongCay}>
-              {giongCay.map((el) => (
+            <Select
+              style={{ width: "100%" }}
+              onChange={handleChangeGiongCay}
+              value={cayDuocChon.giongCay}
+            >
+              {danhSachCayDuocChon.giongCay.map((el) => (
                 <Option value={el.value}>
                   <div className="select-label">
                     <span>{el.label}</span>
@@ -134,6 +186,11 @@ export default function DanhMucCayTrong() {
       <ThemNhomCay
         open={modalThemNhomCay}
         onCancel={handleCancleModalNhomCay}
+      />
+      <ThemLoaiCay
+        open={modalThemLoaiCay}
+        onCancel={() => setModalThemLoaiCay(false)}
+        nhomCay={cayDuocChon.nhomCay}
       />
     </div>
   );

@@ -1,17 +1,30 @@
 import { Form, Input, Modal } from "antd";
 import React, { useState } from "react";
 import ConfirmModal from "../confirmModal";
+import { useForm } from "antd/es/form/Form";
 
 export default function ThemNhomCay(props) {
   const [modalConfirm, setModalConfirm] = useState(false);
+  const [form] = useForm();
 
   const handleSaveModalNhomCay = () => {
     setModalConfirm(true);
   };
 
-  const handleConfirm = (value) => {
+  const handleConfirm = () => {
+    const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
+    const danhSachCayMoi = {
+      ...danhSachCay,
+      nhomCay: [
+        ...danhSachCay.nhomCay,
+        {
+          label: form.getFieldValue("nhomCay"),
+          value: form.getFieldValue("nhomCay"),
+        },
+      ],
+    };
+    localStorage.setItem("danhSachCay", JSON.stringify(danhSachCayMoi));
     setModalConfirm(false);
-    console.log(value);
     props.onCancel();
   };
 
@@ -23,7 +36,10 @@ export default function ThemNhomCay(props) {
       <Modal
         open={props.open}
         onOk={handleSaveModalNhomCay}
-        onCancel={props.onCancel}
+        onCancel={() => {
+          props.onCancel();
+          form.resetFields();
+        }}
         title="Chỉnh sửa nhóm cây"
         width="800px"
         okText="Lưu thông tin"
@@ -31,20 +47,20 @@ export default function ThemNhomCay(props) {
       >
         <div className="content-modal-nhom-cay">
           <h3>Thông tin nhóm</h3>
-          <Form layout="horizontal" onFinish={handleConfirm} name="basic">
+          <Form layout="horizontal" form={form}>
             <div className="input-nhom-cay">
-              <Form.Item label="1. Tên nhóm" name="nhomcay">
+              <Form.Item label="1. Tên nhóm" name="nhomCay">
                 <Input />
               </Form.Item>
             </div>
-            <ConfirmModal
-              open={modalConfirm}
-              onOk={handleConfirm}
-              onCancel={handleCancel}
-            />
           </Form>
         </div>
       </Modal>
+      <ConfirmModal
+        open={modalConfirm}
+        onOk={handleConfirm}
+        onCancel={handleCancel}
+      />
     </>
   );
 }

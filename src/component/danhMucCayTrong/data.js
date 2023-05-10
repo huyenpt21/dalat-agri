@@ -35,6 +35,10 @@ export const NHOM_CAY = [
 
 export const LOAI_CAY = [
   {
+    label: "Tất cả",
+    value: "Tất cả",
+  },
+  {
     label: "Dâu tây Mỹ",
     value: "Dâu tây Mỹ",
     type: "Dâu tây",
@@ -74,13 +78,13 @@ export const LOAI_CAY = [
     value: "Cây Chuối",
     type: "Cây Chuối",
   },
+];
+
+export const GIONG_CAY = [
   {
     label: "Tất cả",
     value: "Tất cả",
   },
-];
-
-export const GIONG_CAY = [
   {
     label: "Dâu tây Mỹ chung",
     value: "Dâu tây Mỹ chung",
@@ -125,9 +129,5 @@ export const GIONG_CAY = [
     label: "Bơ 034",
     value: "Bơ 034",
     type: "Bơ 034",
-  },
-  {
-    label: "Tất cả",
-    value: "Tất cả",
   },
 ];
