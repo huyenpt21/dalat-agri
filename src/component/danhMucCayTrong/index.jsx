@@ -4,9 +4,11 @@ import deleteIcon from "../../assets/Rectangle 2942.png";
 import addIcon from "../../assets/image 4.png";
 import editIcon from "../../assets/image 7.png";
 import ThemNhomCay from "../themNhomCay";
-import { GIONG_CAY, LOAI_CAY, NHOM_CAY } from "./data";
 import ThemLoaiCay from "../themLoaiCay";
 import ThemGionCay from "../themGiongCay";
+import ChinhSuaLoaiCay from "../chinhSuaLoaiCay";
+import { GIONG_CAY, LOAI_CAY, NHOM_CAY } from "../../data";
+import ChinhSuaGionCay from "../chinhSuaGiongCay";
 
 export default function DanhMucCayTrong() {
   const { Option } = Select;
@@ -32,6 +34,8 @@ export default function DanhMucCayTrong() {
   const [modalThemNhomCay, setModalThemNhomCay] = useState(false);
   const [modalThemLoaiCay, setModalThemLoaiCay] = useState(false);
   const [modalThemGiongCay, setModalThemGiongCay] = useState(false);
+  const [modalChinhSuaLoaiCay, setModalChinhSuaLoaiCay] = useState(false);
+  const [modalChinhSuaGiongCay, setModalChinhSuaGiongCay] = useState(false);
   const [isShowOption, setIsShowOption] = useState(false);
   const [isShowOptionGiongCay, setIsShowOptionGiongCay] = useState(false);
 
@@ -103,8 +107,6 @@ export default function DanhMucCayTrong() {
     setModalThemNhomCay(false);
     setIsEdit(false);
   };
-
-  console.log(555, cayDuocChon);
 
   return (
     <div>
@@ -182,10 +184,11 @@ export default function DanhMucCayTrong() {
                         alt=""
                         onClick={(e) => {
                           e.stopPropagation();
-                          setIsShowOption(false);
-                          setIsEdit(true);
-                          setModalThemLoaiCay(true);
-                          setIsShowOptionGiongCay(false);
+                          if (cayDuocChon.loaiCay !== "") {
+                            setModalChinhSuaLoaiCay(true);
+                            setIsShowOption(false);
+                            setIsShowOptionGiongCay(false);
+                          }
                         }}
                       />
                     </span>
@@ -230,8 +233,7 @@ export default function DanhMucCayTrong() {
                         onClick={(e) => {
                           e.stopPropagation();
                           setIsShowOptionGiongCay(false);
-                          setIsEdit(true);
-                          setModalThemGiongCay(true);
+                          setModalChinhSuaGiongCay(true);
                           setIsShowOption(false);
                         }}
                       />
@@ -244,7 +246,11 @@ export default function DanhMucCayTrong() {
               className="add-icon"
               src={addIcon}
               alt=""
-              onClick={() => setModalThemGiongCay(true)}
+              onClick={() => {
+                setModalThemGiongCay(true);
+                setIsShowOptionGiongCay(false);
+                setIsShowOption(false);
+              }}
             />
           </div>
         </Col>
@@ -259,13 +265,22 @@ export default function DanhMucCayTrong() {
         open={modalThemLoaiCay}
         onCancel={() => setModalThemLoaiCay(false)}
         nhomCay={cayDuocChon.nhomCay}
+      />
+      <ChinhSuaLoaiCay
+        open={modalChinhSuaLoaiCay}
+        onCancel={() => setModalChinhSuaLoaiCay(false)}
+        nhomCay={cayDuocChon.nhomCay}
         loaiCayId={cayDuocChon.loaiCay}
-        isEdit={isEdit}
       />
       <ThemGionCay
         open={modalThemGiongCay}
         onCancel={() => setModalThemGiongCay(false)}
         loaiCay={cayDuocChon.loaiCay}
+      />
+      <ChinhSuaGionCay
+        open={modalChinhSuaGiongCay}
+        onCancel={() => setModalChinhSuaGiongCay(false)}
+        giongCayId={cayDuocChon.giongCay}
       />
     </div>
   );

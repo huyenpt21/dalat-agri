@@ -131,3 +131,70 @@ export const GIONG_CAY = [
     type: "Bơ 034",
   },
 ];
+
+export const LOAI_DAT = [
+  {
+    label: "Đất tribat",
+    value: "Đất tribat",
+  },
+  {
+    label: "Vàng",
+    value: "Vàng",
+  },
+  {
+    label: "Đỏ",
+    value: "Đỏ",
+  },
+  {
+    label: "Xơ dừa",
+    value: "Xơ dừa",
+  },
+];
+
+export const LOAI_DIA_HINH = [
+  {
+    label: "Bằng phẳn",
+    value: "Bằng phẳn",
+  },
+  {
+    label: "Dốc cao",
+    value: "Dốc cao",
+  },
+];
+
+export const NGUON_NUOC = [
+  {
+    label: "Suối",
+    value: "Suối",
+  },
+  {
+    label: "Nước giếng",
+    value: "Nước giếng",
+  },
+  {
+    label: "Nước hồ",
+    value: "Nước hồ",
+  },
+];
+
+export const PHUONG_PHAP_CANH_TAC = [
+  {
+    label: "Nhà kính",
+    value: "Nhà kính",
+  },
+  {
+    label: "Ngoài trời",
+    value: "Ngoài trời",
+  },
+];
+
+export const TEMP = [
+  {
+    label: "abc",
+    value: "abc",
+  },
+  {
+    label: "xyz",
+    value: "xyz",
+  },
+];

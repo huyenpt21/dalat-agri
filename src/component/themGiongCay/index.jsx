@@ -12,6 +12,7 @@ export default function ThemGionCay(props) {
   };
 
   const handleConfirm = () => {
+    // thêm vào array chứa list options giống cây
     const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
     const danhSachCayMoi = {
       ...danhSachCay,
@@ -28,6 +29,17 @@ export default function ThemGionCay(props) {
       ],
     };
     localStorage.setItem("danhSachCay", JSON.stringify(danhSachCayMoi));
+
+    // thêm thông tin vào array chứa đầy đủ thông tin của giống cây
+    const thongTinCayLocal =
+      JSON.parse(localStorage.getItem("thongTinGiongCay")) ?? [];
+
+    const thongTinGiongCayMoi = form.getFieldsValue();
+    localStorage.setItem(
+      "thongTinGiongCay",
+      JSON.stringify([...thongTinCayLocal, thongTinGiongCayMoi])
+    );
+
     setModalConfirm(false);
     props.onCancel();
   };

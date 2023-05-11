@@ -1,45 +1,47 @@
 import { Col, Form, Input, Modal, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ConfirmModal from "../confirmModal";
 
-export default function ThemLoaiCay(props) {
-  const [modalConfirm, setModalConfirm] = useState(false);
+export default function ChinhSuaGionCay(props) {
   const [form] = useForm();
+  const [modalConfirm, setModalConfirm] = useState(false);
 
-  const handleSaveModalNhomCay = () => {
+  // mỗi lần mở component sẽ lấy thông tin giống cây (kể cả khi chọn lại giống cây)
+  useEffect(() => {
+    if (modalConfirm === false) {
+      const thongTinGiongCayLocal = JSON.parse(
+        localStorage.getItem("thongTinGiongCay")
+      );
+
+      if (thongTinGiongCayLocal) {
+        const thongTinGiongCay = thongTinGiongCayLocal.find((el) => {
+          return el.maGiong === props.giongCayId;
+        });
+        form.setFieldsValue(thongTinGiongCay);
+      }
+    }
+  });
+
+  const handleSaveModalGiongCay = () => {
     setModalConfirm(true);
   };
 
   const handleConfirm = () => {
-    // thêm vào array chứa list options loại cây
-    const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
-    const danhSachCayMoi = {
-      ...danhSachCay,
-      loaiCay: [
-        ...danhSachCay.loaiCay,
-        {
-          label: form.getFieldValue("tenLoaiCay"),
-          value: form.getFieldValue("maGiong"),
-          type:
-            props.nhomCay === ""
-              ? form.getFieldValue("loaiCay")
-              : props.nhomCay,
-        },
-      ],
-    };
-    localStorage.setItem("danhSachCay", JSON.stringify(danhSachCayMoi));
-
-    // thêm thông tin vào array chứa đầy đủ thông tin của loại cây
-    const thongTinCayLocal =
-      JSON.parse(localStorage.getItem("thongTinLoaiCay")) ?? [];
-
-    const thongTinLoaiCayMoi = form.getFieldsValue();
-    localStorage.setItem(
-      "thongTinLoaiCay",
-      JSON.stringify([...thongTinCayLocal, thongTinLoaiCayMoi])
+    const thongTinCayLocal = JSON.parse(
+      localStorage.getItem("thongTinGiongCay")
     );
+    const thongTinGiongCaySua = form.getFieldsValue();
+    const thongTinCayMoi = thongTinCayLocal.map((el) => {
+      if (el.maGiong === props.giongCayId) {
+        return {
+          ...thongTinGiongCaySua,
+        };
+      }
+      return el;
+    });
 
+    localStorage.setItem("thongTinGiongCay", JSON.stringify(thongTinCayMoi));
     setModalConfirm(false);
     props.onCancel();
   };
@@ -51,12 +53,12 @@ export default function ThemLoaiCay(props) {
     <>
       <Modal
         open={props.open}
-        onOk={handleSaveModalNhomCay}
+        onOk={handleSaveModalGiongCay}
         onCancel={() => {
           props.onCancel();
           form.resetFields();
         }}
-        title="Thêm loại cây"
+        title="Thêm giống cây"
         width="800px"
         okText="Lưu thông tin"
         cancelText="Trở về"
@@ -66,8 +68,8 @@ export default function ThemLoaiCay(props) {
             <Row gutter={40}>
               <Col span={12}>
                 <div className="input-nhom-cay">
-                  <Form.Item label="Tên loại cây" name="tenLoaiCay">
-                    <Input placeholder="Tên loại cây" />
+                  <Form.Item label="Tên giống cây" name="tenGiongCay">
+                    <Input placeholder="Tên giống cây" />
                   </Form.Item>
                 </div>
               </Col>
@@ -82,8 +84,8 @@ export default function ThemLoaiCay(props) {
             <Row gutter={40}>
               <Col span={12}>
                 <div className="input-nhom-cay">
-                  <Form.Item label="Chu kì sinh trưởng" name="chuKiSinhTruong">
-                    <Input placeholder="theo tháng" />
+                  <Form.Item label="Vòng đời" name="vongDoi">
+                    <Input type="number" min={1} defaultValue={1} />
                   </Form.Item>
                 </div>
               </Col>
@@ -99,28 +101,32 @@ export default function ThemLoaiCay(props) {
               <Col span={12}>
                 <div className="input-nhom-cay">
                   <Form.Item label="Giá bán trên thị trường" name="giaBan">
-                    <Input type="number" min={1} defaultValue={1} />
+                    <Input type="number" min={0} defaultValue={0} />
                   </Form.Item>
                 </div>
               </Col>
               <Col span={12}>
                 <div className="input-nhom-cay">
                   <Form.Item
-                    label="Loại cây theo thời gian"
-                    name="loaiCayTheoThoiGian"
+                    label="Khả năng chống chịu"
+                    name="khaNangChongChiu"
                   >
                     <Select
                       options={[
                         {
-                          label: "Ngắn ngày",
-                          value: "Ngắn ngày",
+                          label: "Yếu",
+                          value: "Yếu",
                         },
                         {
-                          label: "Dài ngày",
-                          value: "Dài ngày",
+                          label: "Trung bình",
+                          value: "Trung bình",
+                        },
+                        {
+                          label: "Khỏe",
+                          value: "Khỏe",
                         },
                       ]}
-                      defaultValue={"Ngắn ngày"}
+                      defaultValue={"Yếu"}
                     />
                   </Form.Item>
                 </div>
@@ -129,8 +135,24 @@ export default function ThemLoaiCay(props) {
             <Row gutter={40}>
               <Col span={12}>
                 <div className="input-nhom-cay">
+                  <Form.Item label="Năng xuất trung bình" name="nangSuat">
+                    <Input type="number" min={0} defaultValue={0} />
+                  </Form.Item>
+                </div>
+              </Col>
+              <Col span={12}>
+                <div className="input-nhom-cay">
                   <Form.Item label="Loại cây trồng" name="loaiCay">
                     <Input placeholder="Tên loại cây" />
+                  </Form.Item>
+                </div>
+              </Col>
+            </Row>
+            <Row gutter={40}>
+              <Col span={12}>
+                <div className="input-nhom-cay">
+                  <Form.Item label="Đơn vị thu hoạch" name="donViThuHoach">
+                    <Input />
                   </Form.Item>
                 </div>
               </Col>
