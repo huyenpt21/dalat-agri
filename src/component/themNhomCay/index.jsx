@@ -8,12 +8,14 @@ export default function ThemNhomCay(props) {
   const [form] = useForm();
 
   useEffect(() => {
-    const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
-    const thongTinNhomCay = danhSachCay.nhomCay.find((el) => {
-      return el.value === props.nhomCayId;
-    });
-    form.setFieldValue("nhomCay", thongTinNhomCay?.label);
-  }, [props.nhomCayId]);
+    if (modalConfirm === false) {
+      const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
+      const thongTinNhomCay = danhSachCay.nhomCay.find((el) => {
+        return el.value === props.nhomCayId;
+      });
+      form.setFieldValue("nhomCay", thongTinNhomCay?.label);
+    }
+  });
 
   const handleSaveModalNhomCay = () => {
     setModalConfirm(true);
