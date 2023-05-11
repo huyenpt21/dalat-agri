@@ -108,6 +108,14 @@ export default function DanhMucCayTrong() {
     setIsEdit(false);
   };
 
+  const handleXoaNhomCay = (index) => {
+    if (cayDuocChon.nhomCay !== "") {
+      danhSachCay.nhomCay.splice(index, 1);
+      setDanhSachCay(danhSachCay);
+      localStorage.setItem("danhSachCay", JSON.stringify(danhSachCay));
+    }
+  };
+
   return (
     <div>
       <h2>Danh mục cây trồng</h2>
@@ -125,12 +133,17 @@ export default function DanhMucCayTrong() {
                 setIsShowOption(true);
               }}
             >
-              {danhSachCay.nhomCay.map((el) => (
+              {danhSachCay.nhomCay.map((el, index) => (
                 <Option value={el.value}>
                   <div className="select-label">
                     <span>{el.label}</span>
                     <span>
-                      <img className="select-icon" src={deleteIcon} alt="" />
+                      <img
+                        className="select-icon"
+                        src={deleteIcon}
+                        alt=""
+                        onClick={() => handleXoaNhomCay(index)}
+                      />
                       <img
                         className="select-icon"
                         src={editIcon}
