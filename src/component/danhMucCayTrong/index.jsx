@@ -146,6 +146,35 @@ export default function DanhMucCayTrong() {
     }
   };
 
+  const handleXoaGiongCay = (el) => {
+    if (cayDuocChon.giongCay !== "") {
+      const danhSachCayMoi = danhSachCay.giongCay.filter(
+        (e) => e.value !== el.value
+      );
+      const danhSachCayDuocChonMoi = danhSachCayDuocChon.giongCay.filter(
+        (e) => e.value !== el.value
+      );
+      // update danh sách chứa tất cả loại cây
+      setDanhSachCay((prev) => {
+        return {
+          ...prev,
+          giongCay: danhSachCayMoi,
+        };
+      });
+      // update danh sách chứa loại cây đang hiển thị
+      setDanhSachCayDuocChon((prev) => {
+        return {
+          ...prev,
+          giongCay: danhSachCayDuocChonMoi,
+        };
+      });
+      localStorage.setItem(
+        "danhSachCay",
+        JSON.stringify({ ...danhSachCay, giongCay: danhSachCayMoi })
+      );
+    }
+  };
+
   return (
     <div>
       <h2>Danh mục cây trồng</h2>
@@ -273,7 +302,12 @@ export default function DanhMucCayTrong() {
                   <div className="select-label">
                     <span>{el.label}</span>
                     <span>
-                      <img className="select-icon" src={deleteIcon} alt="" />
+                      <img
+                        className="select-icon"
+                        src={deleteIcon}
+                        alt=""
+                        onClick={() => handleXoaGiongCay(el)}
+                      />
                       <img
                         className="select-icon"
                         src={editIcon}
