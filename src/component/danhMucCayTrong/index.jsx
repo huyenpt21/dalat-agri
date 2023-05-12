@@ -154,14 +154,14 @@ export default function DanhMucCayTrong() {
       const danhSachCayDuocChonMoi = danhSachCayDuocChon.giongCay.filter(
         (e) => e.value !== el.value
       );
-      // update danh sách chứa tất cả loại cây
+      // update danh sách chứa tất cả giống cây
       setDanhSachCay((prev) => {
         return {
           ...prev,
           giongCay: danhSachCayMoi,
         };
       });
-      // update danh sách chứa loại cây đang hiển thị
+      // update danh sách chứa giống cây đang hiển thị
       setDanhSachCayDuocChon((prev) => {
         return {
           ...prev,

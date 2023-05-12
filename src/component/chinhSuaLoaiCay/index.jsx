@@ -12,7 +12,7 @@ import {
 
 export default function ChinhSuaLoaiCay(props) {
   const [form] = useForm();
-  const [modalConfirm, setModalConfirm] = useState();
+  const [modalConfirm, setModalConfirm] = useState(false);
 
   // mỗi lần mở component sẽ lấy thông tin loại cây (kể cả khi chọn lại loại cây)
   useEffect(() => {
