@@ -110,9 +110,39 @@ export default function DanhMucCayTrong() {
 
   const handleXoaNhomCay = (index) => {
     if (cayDuocChon.nhomCay !== "") {
-      danhSachCay.nhomCay.splice(index, 1);
-      setDanhSachCay(danhSachCay);
-      localStorage.setItem("danhSachCay", JSON.stringify(danhSachCay));
+      const currentList = { ...danhSachCay };
+      currentList.nhomCay.splice(index, 1);
+      setDanhSachCay(currentList);
+      localStorage.setItem("danhSachCay", JSON.stringify(currentList));
+    }
+  };
+
+  const handleXoaLoaiCay = (el) => {
+    if (cayDuocChon.loaiCay !== "") {
+      const danhSachCayMoi = danhSachCay.loaiCay.filter(
+        (e) => e.value !== el.value
+      );
+      const danhSachCayDuocChonMoi = danhSachCayDuocChon.loaiCay.filter(
+        (e) => e.value !== el.value
+      );
+      // update danh sách chứa tất cả loại cây
+      setDanhSachCay((prev) => {
+        return {
+          ...prev,
+          loaiCay: danhSachCayMoi,
+        };
+      });
+      // update danh sách chứa loại cây đang hiển thị
+      setDanhSachCayDuocChon((prev) => {
+        return {
+          ...prev,
+          loaiCay: danhSachCayDuocChonMoi,
+        };
+      });
+      localStorage.setItem(
+        "danhSachCay",
+        JSON.stringify({ ...danhSachCay, loaiCay: danhSachCayMoi })
+      );
     }
   };
 
@@ -190,7 +220,12 @@ export default function DanhMucCayTrong() {
                   <div className="select-label">
                     <span>{el.label}</span>
                     <span>
-                      <img className="select-icon" src={deleteIcon} alt="" />
+                      <img
+                        className="select-icon"
+                        src={deleteIcon}
+                        alt=""
+                        onClick={() => handleXoaLoaiCay(el)}
+                      />
                       <img
                         className="select-icon"
                         src={editIcon}
