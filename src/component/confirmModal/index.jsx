@@ -13,7 +13,9 @@ export default function ConfirmModal(props) {
       closeIcon={<></>}
     >
       <div className="modal-confirm-content">
-        <p>BẠN CÓ CHẮC CHẮN MUỐN LƯU</p>
+        <p>
+          {props.textContent ? props.textContent : "BẠN CÓ CHẮC CHẮN MUỐN LƯU"}
+        </p>
       </div>
     </Modal>
   );

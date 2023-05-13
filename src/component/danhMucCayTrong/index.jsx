@@ -9,6 +9,7 @@ import ThemGionCay from "../themGiongCay";
 import ChinhSuaLoaiCay from "../chinhSuaLoaiCay";
 import { GIONG_CAY, LOAI_CAY, NHOM_CAY } from "../../data";
 import ChinhSuaGionCay from "../chinhSuaGiongCay";
+import ConfirmModal from "../confirmModal";
 
 export default function DanhMucCayTrong() {
   const { Option } = Select;
@@ -38,6 +39,7 @@ export default function DanhMucCayTrong() {
   const [modalChinhSuaGiongCay, setModalChinhSuaGiongCay] = useState(false);
   const [isShowOption, setIsShowOption] = useState(false);
   const [isShowOptionGiongCay, setIsShowOptionGiongCay] = useState(false);
+  const [modalConfirm, setModalConfirm] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(
@@ -103,27 +105,46 @@ export default function DanhMucCayTrong() {
     });
   };
 
+  const handleConfirm = () => {
+    if (cayDuocChon.nhomCay !== "") {
+      handleXoaNhomCay();
+    } else if (cayDuocChon.loaiCay !== "") {
+      handleXoaLoaiCay();
+    } else if (cayDuocChon.giongCay !== "") {
+      handleXoaGiongCay();
+    }
+    setModalConfirm(false);
+    setCayDuocChon({ nhomCay: "", loaiCay: "", giongCay: "" });
+  };
+
+  const handleCancel = () => {
+    setCayDuocChon({ nhomCay: "", loaiCay: "", giongCay: "" });
+    setModalConfirm(false);
+  };
+
   const handleCancleModalNhomCay = () => {
     setModalThemNhomCay(false);
     setIsEdit(false);
   };
 
-  const handleXoaNhomCay = (index) => {
+  const handleXoaNhomCay = () => {
     if (cayDuocChon.nhomCay !== "") {
-      const currentList = { ...danhSachCay };
-      currentList.nhomCay.splice(index, 1);
-      setDanhSachCay(currentList);
-      localStorage.setItem("danhSachCay", JSON.stringify(currentList));
+      const danhSachNhomCayMoi = danhSachCay.nhomCay.filter(
+        (el) => el.value !== cayDuocChon.nhomCay
+      );
+      const newList = { ...danhSachCay, nhomCay: danhSachNhomCayMoi };
+      setDanhSachCay(newList);
+      localStorage.setItem("danhSachCay", JSON.stringify(newList));
     }
   };
 
-  const handleXoaLoaiCay = (el) => {
+  const handleXoaLoaiCay = () => {
     if (cayDuocChon.loaiCay !== "") {
       const danhSachCayMoi = danhSachCay.loaiCay.filter(
-        (e) => e.value !== el.value
+        (e) => e.value !== cayDuocChon.loaiCay
       );
       const danhSachCayDuocChonMoi = danhSachCayDuocChon.loaiCay.filter(
-        (e) => e.value !== el.value
+        (e) => e.value !== cayDuocChon.loaiCay
       );
       // update danh sách chứa tất cả loại cây
       setDanhSachCay((prev) => {
@@ -146,13 +167,13 @@ export default function DanhMucCayTrong() {
     }
   };
 
-  const handleXoaGiongCay = (el) => {
+  const handleXoaGiongCay = () => {
     if (cayDuocChon.giongCay !== "") {
       const danhSachCayMoi = danhSachCay.giongCay.filter(
-        (e) => e.value !== el.value
+        (e) => e.value !== cayDuocChon.giongCay
       );
       const danhSachCayDuocChonMoi = danhSachCayDuocChon.giongCay.filter(
-        (e) => e.value !== el.value
+        (e) => e.value !== cayDuocChon.giongCay
       );
       // update danh sách chứa tất cả giống cây
       setDanhSachCay((prev) => {
@@ -192,7 +213,7 @@ export default function DanhMucCayTrong() {
                 setIsShowOption(true);
               }}
             >
-              {danhSachCay.nhomCay.map((el, index) => (
+              {danhSachCay.nhomCay.map((el) => (
                 <Option value={el.value}>
                   <div className="select-label">
                     <span>{el.label}</span>
@@ -201,7 +222,14 @@ export default function DanhMucCayTrong() {
                         className="select-icon"
                         src={deleteIcon}
                         alt=""
-                        onClick={() => handleXoaNhomCay(index)}
+                        onClick={() => {
+                          setModalConfirm(true);
+                          setCayDuocChon({
+                            nhomCay: el.value,
+                            loaiCay: "",
+                            giongCay: "",
+                          });
+                        }}
                       />
                       <img
                         className="select-icon"
@@ -253,7 +281,14 @@ export default function DanhMucCayTrong() {
                         className="select-icon"
                         src={deleteIcon}
                         alt=""
-                        onClick={() => handleXoaLoaiCay(el)}
+                        onClick={() => {
+                          setModalConfirm(true);
+                          setCayDuocChon({
+                            nhomCay: "",
+                            loaiCay: el.value,
+                            giongCay: "",
+                          });
+                        }}
                       />
                       <img
                         className="select-icon"
@@ -306,7 +341,14 @@ export default function DanhMucCayTrong() {
                         className="select-icon"
                         src={deleteIcon}
                         alt=""
-                        onClick={() => handleXoaGiongCay(el)}
+                        onClick={() => {
+                          setModalConfirm(true);
+                          setCayDuocChon({
+                            nhomCay: "",
+                            loaiCay: "",
+                            giongCay: el.value,
+                          });
+                        }}
                       />
                       <img
                         className="select-icon"
@@ -363,6 +405,12 @@ export default function DanhMucCayTrong() {
         open={modalChinhSuaGiongCay}
         onCancel={() => setModalChinhSuaGiongCay(false)}
         giongCayId={cayDuocChon.giongCay}
+      />
+      <ConfirmModal
+        open={modalConfirm}
+        onOk={handleConfirm}
+        onCancel={handleCancel}
+        textContent="BẠN CÓ CHẮC CHẮN MUỐN XÓA"
       />
     </div>
   );
