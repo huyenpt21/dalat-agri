@@ -200,7 +200,7 @@ export default function DanhMucCayTrong() {
     <div>
       <h2>Danh mục cây trồng</h2>
       <Row gutter={120}>
-        <Col span={6}>
+        <Col span={8}>
           <div>Nhóm cây</div>
           <div className="group-select-add">
             <Select
@@ -257,11 +257,12 @@ export default function DanhMucCayTrong() {
               onClick={() => {
                 setModalThemNhomCay(true);
                 setIsShowOption(false);
+                setIsShowOptionGiongCay(false);
               }}
             />
           </div>
         </Col>
-        <Col span={6}>
+        <Col span={8}>
           <div>Loại cây</div>
           <div className="group-select-add">
             <Select
@@ -319,11 +320,12 @@ export default function DanhMucCayTrong() {
               onClick={() => {
                 setModalThemLoaiCay(true);
                 setIsShowOption(false);
+                setIsShowOptionGiongCay(false);
               }}
             />
           </div>
         </Col>
-        <Col span={6}>
+        <Col span={8}>
           <div>Giống cây</div>
           <div className="group-select-add">
             <Select
