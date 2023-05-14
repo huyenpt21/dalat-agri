@@ -412,6 +412,7 @@ export default function DanhMucCayTrong() {
       <ChinhSuaGionCay
         open={modalChinhSuaGiongCay}
         onCancel={() => setModalChinhSuaGiongCay(false)}
+        loaiCay={cayDuocChon.loaiCay}
         giongCayId={cayDuocChon.giongCay}
       />
       <ConfirmModal

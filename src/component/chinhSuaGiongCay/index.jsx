@@ -28,6 +28,28 @@ export default function ChinhSuaGionCay(props) {
   };
 
   const handleConfirm = () => {
+    // thêm vào array chứa list options giống cây
+    const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
+    const danhSachGiongCayMoi = danhSachCay.giongCay.map((el) => {
+      if (el.value === props.giongCayId) {
+        return {
+          label: form.getFieldValue("tenGiongCay"),
+          value: form.getFieldValue("maGiong"),
+          type:
+            props.loaiCay === ""
+              ? form.getFieldValue("loaiCay")
+              : props.loaiCay,
+        };
+      }
+      return el;
+    });
+    const danhSachCayMoi = {
+      ...danhSachCay,
+      giongCay: danhSachGiongCayMoi,
+    };
+    localStorage.setItem("danhSachCay", JSON.stringify(danhSachCayMoi));
+
+    // lưu data vào danh sách cây chưa list option
     const thongTinCayLocal = JSON.parse(
       localStorage.getItem("thongTinGiongCay")
     );
@@ -76,7 +98,7 @@ export default function ChinhSuaGionCay(props) {
               <Col span={12}>
                 <div className="input-nhom-cay">
                   <Form.Item label="Mã giống" name="maGiong">
-                    <Input placeholder="Mã giống" />
+                    <Input placeholder="Mã giống" disabled />
                   </Form.Item>
                 </div>
               </Col>
@@ -143,7 +165,7 @@ export default function ChinhSuaGionCay(props) {
               <Col span={12}>
                 <div className="input-nhom-cay">
                   <Form.Item label="Loại cây trồng" name="loaiCay">
-                    <Input placeholder="Tên loại cây" />
+                    <Input placeholder="Tên loại cây" disabled />
                   </Form.Item>
                 </div>
               </Col>

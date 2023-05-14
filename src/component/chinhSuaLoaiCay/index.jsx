@@ -34,6 +34,25 @@ export default function ChinhSuaLoaiCay(props) {
     setModalConfirm(true);
   };
   const handleConfirm = () => {
+    const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
+    const danhSachLoaiCayMoi = danhSachCay.loaiCay.map((el) => {
+      if (el.value === props.loaiCayId) {
+        return {
+          label: form.getFieldValue("tenLoaiCay"),
+          value: form.getFieldValue("maGiong"),
+          type:
+            props.nhomCay === ""
+              ? form.getFieldValue("nhomCay")
+              : props.nhomCay,
+        };
+      }
+      return el;
+    });
+    const danhSachCayMoi = {
+      ...danhSachCay,
+      loaiCay: danhSachLoaiCayMoi,
+    };
+    localStorage.setItem("danhSachCay", JSON.stringify(danhSachCayMoi));
     const thongTinCayLocal = JSON.parse(
       localStorage.getItem("thongTinLoaiCay")
     );
@@ -79,7 +98,7 @@ export default function ChinhSuaLoaiCay(props) {
               <Col span={12}>
                 <div className="input-nhom-cay">
                   <Form.Item label="Mã giống" name="maGiong">
-                    <Input placeholder="Mã giống" />
+                    <Input placeholder="Mã giống" disabled />
                   </Form.Item>
                 </div>
               </Col>
