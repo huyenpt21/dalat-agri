@@ -197,7 +197,7 @@ export default function DanhMucCayTrong() {
   };
 
   return (
-    <div>
+    <div className="main-content">
       <h2>Danh mục cây trồng</h2>
       <Row gutter={120}>
         <Col span={6}>

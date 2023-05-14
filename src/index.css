@@ -77,7 +77,10 @@ aside.ant-layout-sider.ant-layout-sider-dark,
   margin-bottom: 0;
 }
 
-/* ghi đè class của antd */
-:where(.css-dev-only-do-not-override-ed5zg0).ant-select-dropdown {
-  z-index: 1;
+.main-content {
+  :global {
+    :where(.css-dev-only-do-not-override-ed5zg0).ant-select-dropdown {
+      z-index: 1;
+    }
+  }
 }
