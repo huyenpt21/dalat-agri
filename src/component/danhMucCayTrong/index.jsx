@@ -197,7 +197,7 @@ export default function DanhMucCayTrong() {
   };
 
   return (
-    <div className="main-content">
+    <div>
       <h2>Danh mục cây trồng</h2>
       <Row gutter={120}>
         <Col span={6}>
@@ -222,8 +222,10 @@ export default function DanhMucCayTrong() {
                         className="select-icon"
                         src={deleteIcon}
                         alt=""
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setModalConfirm(true);
+                          setIsShowOption(false);
                           setCayDuocChon({
                             nhomCay: el.value,
                             loaiCay: "",
@@ -281,8 +283,10 @@ export default function DanhMucCayTrong() {
                         className="select-icon"
                         src={deleteIcon}
                         alt=""
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setModalConfirm(true);
+                          setIsShowOption(false);
                           setCayDuocChon({
                             nhomCay: "",
                             loaiCay: el.value,
@@ -341,8 +345,10 @@ export default function DanhMucCayTrong() {
                         className="select-icon"
                         src={deleteIcon}
                         alt=""
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setModalConfirm(true);
+                          setIsShowOption(false);
                           setCayDuocChon({
                             nhomCay: "",
                             loaiCay: "",

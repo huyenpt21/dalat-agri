@@ -76,11 +76,3 @@ aside.ant-layout-sider.ant-layout-sider-dark,
 .content-modal-nhom-cay .ant-form-item {
   margin-bottom: 0;
 }
-
-.main-content {
-  :global {
-    :where(.css-dev-only-do-not-override-ed5zg0).ant-select-dropdown {
-      z-index: 1;
-    }
-  }
-}
