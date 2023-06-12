@@ -11,7 +11,10 @@ import {
 } from "../../data";
 
 export default function ChinhSuaLoaiCay(props) {
+  // dùng hook useForm của Antd để lấy dữ liệu từ form
   const [form] = useForm();
+
+  // state luue trạng thái ẩn hiện của modal confirm
   const [modalConfirm, setModalConfirm] = useState(false);
 
   // mỗi lần mở component sẽ lấy thông tin loại cây (kể cả khi chọn lại loại cây)
@@ -33,8 +36,12 @@ export default function ChinhSuaLoaiCay(props) {
   const handleSaveModalNhomCay = () => {
     setModalConfirm(true);
   };
+
+  // function sử lí khi chọn đồng ý trong modal confirm
   const handleConfirm = () => {
     const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
+
+    // update list options loại cây bằng data lấy từ form
     const danhSachLoaiCayMoi = danhSachCay.loaiCay.map((el) => {
       if (el.value === props.loaiCayId) {
         return {
@@ -48,6 +55,8 @@ export default function ChinhSuaLoaiCay(props) {
       }
       return el;
     });
+
+    // update danh sách chứa toàn bộ cây mới vào local storage
     const danhSachCayMoi = {
       ...danhSachCay,
       loaiCay: danhSachLoaiCayMoi,
@@ -70,9 +79,12 @@ export default function ChinhSuaLoaiCay(props) {
     setModalConfirm(false);
     props.onCancel();
   };
-  const handleCancel = () => {};
+  const handleCancel = () => {
+    setModalConfirm(false);
+  };
   return (
     <>
+      {/* sử dụng component có sẵn của Antd: Modal */}
       <Modal
         open={props.open}
         onOk={handleSaveModalNhomCay}

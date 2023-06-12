@@ -3,6 +3,7 @@ import React from "react";
 
 export default function ConfirmModal(props) {
   return (
+    // sử dụng component có sẵn của Antd để làm modal
     <Modal
       open={props.open}
       onOk={props.onOk}

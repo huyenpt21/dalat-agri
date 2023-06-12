@@ -1,12 +1,14 @@
 import { Form, Input, Modal } from "antd";
+import { useForm } from "antd/es/form/Form";
 import React, { useEffect, useState } from "react";
 import ConfirmModal from "../confirmModal";
-import { useForm } from "antd/es/form/Form";
 
 export default function ThemNhomCay(props) {
   const [modalConfirm, setModalConfirm] = useState(false);
+  // dùng hook useForm của Antd để lấy dữ liệu từ form
   const [form] = useForm();
 
+  // mỗi lần mở component sẽ lấy thông tin nhóm cây (kể cả khi chọn lại nhóm cây)
   useEffect(() => {
     if (modalConfirm === false) {
       const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
@@ -23,7 +25,9 @@ export default function ThemNhomCay(props) {
 
   const handleConfirm = () => {
     const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
+    // isEdit = true -> modal ở trạng thái edit
     if (props.isEdit) {
+      // tìm phần tử được chọn trong nhóm cây -> update phần tử đó bằng data lấy từ form, còn lại các phần tử khác giữ nguyên
       const thongTinNhomCay = danhSachCay.nhomCay.map((el) => {
         if (el.value === props.nhomCayId) {
           return {
@@ -33,12 +37,15 @@ export default function ThemNhomCay(props) {
         }
         return el;
       });
+      // update danh sách cây mới
       const danhSachCayMoi = {
         ...danhSachCay,
         nhomCay: [...thongTinNhomCay],
       };
       localStorage.setItem("danhSachCay", JSON.stringify(danhSachCayMoi));
     } else {
+      // isEdit = false -> modal ở trạng thái create
+      // thêm cây mới vào danh sách - lấy data từ form
       const danhSachCayMoi = {
         ...danhSachCay,
         nhomCay: [
@@ -60,6 +67,7 @@ export default function ThemNhomCay(props) {
   };
   return (
     <>
+      {/* sử dụng component có sẵn của Antd: Modal */}
       <Modal
         open={props.open}
         onOk={handleSaveModalNhomCay}
@@ -74,6 +82,7 @@ export default function ThemNhomCay(props) {
       >
         <div className="content-modal-nhom-cay">
           <h3>Thông tin nhóm</h3>
+          {/* sử dụng Form / Form.Item của Antd để xây dựng form lấy dữ liệu */}
           <Form layout="horizontal" form={form}>
             <div className="input-nhom-cay">
               <Form.Item label="1. Tên nhóm" name="nhomCay">
@@ -83,6 +92,7 @@ export default function ThemNhomCay(props) {
           </Form>
         </div>
       </Modal>
+      {/* modal confirm */}
       <ConfirmModal
         open={modalConfirm}
         onOk={handleConfirm}

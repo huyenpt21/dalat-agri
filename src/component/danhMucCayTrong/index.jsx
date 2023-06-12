@@ -14,33 +14,49 @@ import ConfirmModal from "../confirmModal";
 export default function DanhMucCayTrong() {
   const { Option } = Select;
 
+  // lưu nhóm cây, loại cây, và giống cây đang được chọn
   const [cayDuocChon, setCayDuocChon] = useState({
     nhomCay: "",
     loaiCay: "",
     giongCay: "",
   });
 
+  // chứa danh sách nhóm cây / loại cây / giống cây khi có sự thay đổi (thêm, sửa, xóa)
+  // VD: thêm nhóm cây A1 -> lưu vào state này
   const [danhSachCay, setDanhSachCay] = useState({
     nhomCay: [],
     loaiCay: [],
     giongCay: [],
   });
 
+  // danh sách nhóm cây / loại cây / giống cây được chọn tương ứng
+  // VD: Chọn nhóm cây A, có các loại cây tương ứng -> lưu trong state này
   const [danhSachCayDuocChon, setDanhSachCayDuocChon] = useState({
     loaiCay: [],
     giongCay: [],
   });
 
+  // lưu trạng thái có phải edit không để dùng lại component với create
   const [isEdit, setIsEdit] = useState(false);
+
+  // các state lưu trạng thái của ẩn / hiện các modal create / update của nhóm cây, loại cây, giống cây
+  // true = hiện / false = ẩn
   const [modalThemNhomCay, setModalThemNhomCay] = useState(false);
   const [modalThemLoaiCay, setModalThemLoaiCay] = useState(false);
   const [modalThemGiongCay, setModalThemGiongCay] = useState(false);
   const [modalChinhSuaLoaiCay, setModalChinhSuaLoaiCay] = useState(false);
   const [modalChinhSuaGiongCay, setModalChinhSuaGiongCay] = useState(false);
-  const [isShowOption, setIsShowOption] = useState(false);
-  const [isShowOptionGiongCay, setIsShowOptionGiongCay] = useState(false);
+
+  // state lưu trạng thái ẩn / hiện của modal confirrm khi delete
   const [modalConfirm, setModalConfirm] = useState(false);
 
+  // state lưu trạng thái ẩn / hiện của list option -> điều chỉnh trạng thái đóng / mở của option trong select tùy ý
+  // VD: click vào nhóm cây -> show list loại cây tương ứng
+  // true = hiện / false = ẩn
+  const [isShowOption, setIsShowOption] = useState(false);
+  const [isShowOptionGiongCay, setIsShowOptionGiongCay] = useState(false);
+
+  // lấy danh sách chứa tất cả nhóm cây, loại cây, giống cây lưu ở local storage trong lần đầu tiên render page
   useEffect(() => {
     localStorage.setItem(
       "danhSachCay",
@@ -52,12 +68,15 @@ export default function DanhMucCayTrong() {
     );
   }, []);
 
+  // khi danh sách cây trong local storage thay đổi -> cập nhập lại vào state trong component
   useEffect(() => {
     const danhSachCayLocal = JSON.parse(localStorage.getItem("danhSachCay"));
     setDanhSachCay(danhSachCayLocal);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localStorage.getItem("danhSachCay")]);
 
+  // function xử lý sự kiện thay đổi nhóm cây
+  // set nhóm cây được chọn và danh sách loại cây tương ứng theo nhóm cây
   const handleChangeNhomCay = (value) => {
     const loaiCayTheoNhomCay = danhSachCay.loaiCay.filter((el) => {
       return el.type === value;
@@ -77,6 +96,8 @@ export default function DanhMucCayTrong() {
     setCayDuocChon({ nhomCay: value, loaiCay: "", giongCay: "" });
   };
 
+  // function xử lý sự kiện thay đổi loại cây
+  // set loại cây được chọn và danh sách giống cây tương ứng theo loại cây
   const handleChangeLoaiCay = (value) => {
     setIsShowOptionGiongCay(true);
     const giongCayTheoLoaiCay = danhSachCay.giongCay.filter((el) => {
@@ -99,12 +120,15 @@ export default function DanhMucCayTrong() {
     });
   };
 
+  // function xử lý sự kiện thay đổi giống cây
+  // set giống cây được chọn
   const handleChangeGiongCay = (value) => {
     setCayDuocChon((prev) => {
       return { ...prev, giongCay: value };
     });
   };
 
+  // function xử lý khi đồng ý xóa trong modal confirm xóa
   const handleConfirm = () => {
     if (cayDuocChon.nhomCay !== "") {
       handleXoaNhomCay();
@@ -117,16 +141,19 @@ export default function DanhMucCayTrong() {
     setCayDuocChon({ nhomCay: "", loaiCay: "", giongCay: "" });
   };
 
+  // function xử lý khi chọn quay lại trong modal confirm xóa
   const handleCancel = () => {
     setCayDuocChon({ nhomCay: "", loaiCay: "", giongCay: "" });
     setModalConfirm(false);
   };
 
+  // function xử lý khi chọn quay lại trong modal confirm xóa
   const handleCancleModalNhomCay = () => {
     setModalThemNhomCay(false);
     setIsEdit(false);
   };
 
+  // function xử lý xóa nhóm cây
   const handleXoaNhomCay = () => {
     if (cayDuocChon.nhomCay !== "") {
       const danhSachNhomCayMoi = danhSachCay.nhomCay.filter(
@@ -138,6 +165,7 @@ export default function DanhMucCayTrong() {
     }
   };
 
+  // function xử lý xóa loại cây
   const handleXoaLoaiCay = () => {
     if (cayDuocChon.loaiCay !== "") {
       const danhSachCayMoi = danhSachCay.loaiCay.filter(
@@ -153,13 +181,14 @@ export default function DanhMucCayTrong() {
           loaiCay: danhSachCayMoi,
         };
       });
-      // update danh sách chứa loại cây đang hiển thị
+      // update danh sách chứa loại cây đang hiển thị theo nhóm cây
       setDanhSachCayDuocChon((prev) => {
         return {
           ...prev,
           loaiCay: danhSachCayDuocChonMoi,
         };
       });
+      // update vào local storage
       localStorage.setItem(
         "danhSachCay",
         JSON.stringify({ ...danhSachCay, loaiCay: danhSachCayMoi })
@@ -167,6 +196,7 @@ export default function DanhMucCayTrong() {
     }
   };
 
+  // function xử lý xóa giống cây
   const handleXoaGiongCay = () => {
     if (cayDuocChon.giongCay !== "") {
       const danhSachCayMoi = danhSachCay.giongCay.filter(
@@ -189,6 +219,7 @@ export default function DanhMucCayTrong() {
           giongCay: danhSachCayDuocChonMoi,
         };
       });
+      // update vào local storage
       localStorage.setItem(
         "danhSachCay",
         JSON.stringify({ ...danhSachCay, giongCay: danhSachCayMoi })
@@ -197,6 +228,7 @@ export default function DanhMucCayTrong() {
   };
 
   return (
+    // sử dụng các component có sẵn của Antd để chia layout trong page: Row (hàng), Col (cột)
     <div>
       <h2>Danh mục cây trồng</h2>
       <Row gutter={120}>
@@ -387,34 +419,49 @@ export default function DanhMucCayTrong() {
           </div>
         </Col>
       </Row>
+      {/* các component thêm, sửa */}
+
+      {/* 
+        Nếu isEdit = true -> component update nhóm cây
+        Nếu isEdit = false -> component create nhóm cây
+      */}
       <ThemNhomCay
         open={modalThemNhomCay}
         onCancel={handleCancleModalNhomCay}
         nhomCayId={cayDuocChon.nhomCay}
         isEdit={isEdit}
       />
+
+      {/* modal thêm loại cây */}
       <ThemLoaiCay
         open={modalThemLoaiCay}
         onCancel={() => setModalThemLoaiCay(false)}
         nhomCay={cayDuocChon.nhomCay}
       />
+
+      {/* modal chỉnh sửa loại cây */}
       <ChinhSuaLoaiCay
         open={modalChinhSuaLoaiCay}
         onCancel={() => setModalChinhSuaLoaiCay(false)}
         nhomCay={cayDuocChon.nhomCay}
         loaiCayId={cayDuocChon.loaiCay}
       />
+
+      {/* modal thêm giống cây */}
       <ThemGionCay
         open={modalThemGiongCay}
         onCancel={() => setModalThemGiongCay(false)}
         loaiCay={cayDuocChon.loaiCay}
       />
+
+      {/* modal chỉnh sửa giống cây */}
       <ChinhSuaGionCay
         open={modalChinhSuaGiongCay}
         onCancel={() => setModalChinhSuaGiongCay(false)}
         loaiCay={cayDuocChon.loaiCay}
         giongCayId={cayDuocChon.giongCay}
       />
+      {/* modal confirm */}
       <ConfirmModal
         open={modalConfirm}
         onOk={handleConfirm}

@@ -4,7 +4,10 @@ import React, { useEffect, useState } from "react";
 import ConfirmModal from "../confirmModal";
 
 export default function ChinhSuaGionCay(props) {
+  // dùng hook useForm của Antd để lấy dữ liệu từ form
   const [form] = useForm();
+
+  // state luue trạng thái ẩn hiện của modal confirm
   const [modalConfirm, setModalConfirm] = useState(false);
 
   // mỗi lần mở component sẽ lấy thông tin giống cây (kể cả khi chọn lại giống cây)
@@ -73,6 +76,7 @@ export default function ChinhSuaGionCay(props) {
   };
   return (
     <>
+      {/* sử dụng component có sẵn của Antd: Modal */}
       <Modal
         open={props.open}
         onOk={handleSaveModalGiongCay}
@@ -86,6 +90,7 @@ export default function ChinhSuaGionCay(props) {
         cancelText="Trở về"
       >
         <div className="content-modal-loai-cay">
+          {/* sử dụng Form / Form.Item của Antd để xây dựng form lấy dữ liệu */}
           <Form layout="vertical" form={form}>
             <Row gutter={40}>
               <Col span={12}>
@@ -182,6 +187,7 @@ export default function ChinhSuaGionCay(props) {
           </Form>
         </div>
       </Modal>
+      {/* modal confirm */}
       <ConfirmModal
         open={modalConfirm}
         onOk={handleConfirm}

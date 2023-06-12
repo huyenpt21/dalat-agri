@@ -4,14 +4,18 @@ import logo from "../../assets/image 2.png";
 import { Outlet, useNavigate } from "react-router-dom";
 const { Header, Content, Sider } = Layout;
 
+// layout - phần khung không website: chứa header - menu - thẻ outlet để render các page content
 export default function LayoutMain() {
+  // dùng hook useNavigate của react-router-dom để điều hướng các trang trong website -> điều hướng tới các page trong menu
   const navigate = useNavigate();
+
   const handleClickMenu = (value) => {
     if (value.key === "danh-muc-cay-trong") {
       navigate(value.key);
     }
   };
   return (
+    // sử dụng các component có sẵn của Antd để tạo layout cho page: Layout, Sider, Menu, Header, Content, Breadcrumb
     <Layout style={{ minHeight: "100vh" }}>
       <Sider>
         <div

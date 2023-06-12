@@ -1,3 +1,4 @@
+// lưu thông tin mặc định ban đầu cho danh sách nhóm cây, loại cây, giống cây
 export const NHOM_CAY = [
   {
     label: "Dâu tây",

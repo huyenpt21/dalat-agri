@@ -4,7 +4,10 @@ import React, { useState } from "react";
 import ConfirmModal from "../confirmModal";
 
 export default function ThemLoaiCay(props) {
+  // state luue trạng thái ẩn hiện của modal confirm
   const [modalConfirm, setModalConfirm] = useState(false);
+
+  // dùng hook useForm của Antd để lấy dữ liệu từ form
   const [form] = useForm();
 
   const handleSaveModalNhomCay = () => {
@@ -34,6 +37,7 @@ export default function ThemLoaiCay(props) {
     const thongTinCayLocal =
       JSON.parse(localStorage.getItem("thongTinLoaiCay")) ?? [];
 
+    // lấy tất cả data trong form lưu vào local storage
     const thongTinLoaiCayMoi = form.getFieldsValue();
     localStorage.setItem(
       "thongTinLoaiCay",
@@ -49,6 +53,7 @@ export default function ThemLoaiCay(props) {
   };
   return (
     <>
+      {/* sử dụng component có sẵn của Antd: Modal */}
       <Modal
         open={props.open}
         onOk={handleSaveModalNhomCay}
@@ -62,6 +67,7 @@ export default function ThemLoaiCay(props) {
         cancelText="Trở về"
       >
         <div className="content-modal-loai-cay">
+          {/* sử dụng Form / Form.Item của Antd để xây dựng form lấy dữ liệu */}
           <Form layout="vertical" form={form}>
             <Row gutter={40}>
               <Col span={12}>
@@ -138,6 +144,7 @@ export default function ThemLoaiCay(props) {
           </Form>
         </div>
       </Modal>
+      {/* modal confirm */}
       <ConfirmModal
         open={modalConfirm}
         onOk={handleConfirm}
