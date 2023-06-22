@@ -16,7 +16,7 @@ export default function LayoutMain() {
   };
   return (
     // sử dụng các component có sẵn của Antd để tạo layout cho page: Layout, Sider, Menu, Header, Content, Breadcrumb
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout>
       <Sider>
         <div
           className="logo"
@@ -24,17 +24,18 @@ export default function LayoutMain() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            marginTop: "24px",
           }}
         >
           <img
             src={logo}
             alt="logo"
-            style={{ width: "40px", marginRight: "12px" }}
+            style={{ width: "45px", marginRight: "12px" }}
           />
           <div style={{ fontWeight: "600" }}>DALAT’AGRI</div>
         </div>
         <Menu
-          theme="light"
+          style={{ marginTop: "32px" }}
           mode="inline"
           items={[
             {
@@ -48,25 +49,11 @@ export default function LayoutMain() {
         />
       </Sider>
       <Layout className="site-layout">
-        <Header style={{ paddingLeft: "14px", background: "#ccc" }}>
-          <div style={{ fontSize: "18px" }}>Trang chủ</div>
-        </Header>
-        <Content style={{ margin: "0 16px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              Trang chủ
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Danh mục cây trồng</Breadcrumb.Item>
-          </Breadcrumb>
+        <Content style={{ margin: "22px 32px" }}>
           <div
             style={{
               padding: 24,
-              minHeight: "90%",
-              background: "#9DE783",
+              minHeight: "100%",
             }}
           >
             <Outlet />

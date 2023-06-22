@@ -27,26 +27,24 @@ aside.ant-layout-sider.ant-layout-sider-dark,
   color: #000;
 }
 
-.select-label {
+.list-item {
   display: flex;
   justify-content: space-between;
-}
-
-.add-icon {
-  width: 24px;
-  height: 24px;
   cursor: pointer;
+  padding: 12px !important;
 }
 
-.select-label .select-icon {
+.active-item {
+  background-color: rgba(187, 229, 250, 0.23);
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.list-item .select-icon {
   margin-right: 10px;
   width: 14px;
   font-weight: 700;
-}
-.group-select-add {
-  display: flex;
-  column-gap: 12px;
-  align-items: center;
+  cursor: pointer;
 }
 
 .content-modal-nhom-cay {
@@ -75,4 +73,20 @@ aside.ant-layout-sider.ant-layout-sider-dark,
 
 .content-modal-nhom-cay .ant-form-item {
   margin-bottom: 0;
+}
+
+.site-layout {
+  background-color: rgba(159, 223, 255, 0.23);
+  height: 100vh;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
 }

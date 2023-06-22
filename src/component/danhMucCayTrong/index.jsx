@@ -1,19 +1,17 @@
-import { Col, Row, Select } from "antd";
+import { Button, Card, Col, List, Row } from "antd";
+import VirtualList from "rc-virtual-list";
 import React, { useEffect, useState } from "react";
 import deleteIcon from "../../assets/Rectangle 2942.png";
-import addIcon from "../../assets/image 4.png";
 import editIcon from "../../assets/image 7.png";
-import ThemNhomCay from "../themNhomCay";
-import ThemLoaiCay from "../themLoaiCay";
-import ThemGionCay from "../themGiongCay";
-import ChinhSuaLoaiCay from "../chinhSuaLoaiCay";
 import { GIONG_CAY, LOAI_CAY, NHOM_CAY } from "../../data";
 import ChinhSuaGionCay from "../chinhSuaGiongCay";
+import ChinhSuaLoaiCay from "../chinhSuaLoaiCay";
 import ConfirmModal from "../confirmModal";
+import ThemGionCay from "../themGiongCay";
+import ThemLoaiCay from "../themLoaiCay";
+import ThemNhomCay from "../themNhomCay";
 
 export default function DanhMucCayTrong() {
-  const { Option } = Select;
-
   // lưu nhóm cây, loại cây, và giống cây đang được chọn
   const [cayDuocChon, setCayDuocChon] = useState({
     nhomCay: "",
@@ -49,12 +47,6 @@ export default function DanhMucCayTrong() {
 
   // state lưu trạng thái ẩn / hiện của modal confirrm khi delete
   const [modalConfirm, setModalConfirm] = useState(false);
-
-  // state lưu trạng thái ẩn / hiện của list option -> điều chỉnh trạng thái đóng / mở của option trong select tùy ý
-  // VD: click vào nhóm cây -> show list loại cây tương ứng
-  // true = hiện / false = ẩn
-  const [isShowOption, setIsShowOption] = useState(false);
-  const [isShowOptionGiongCay, setIsShowOptionGiongCay] = useState(false);
 
   // lấy danh sách chứa tất cả nhóm cây, loại cây, giống cây lưu ở local storage trong lần đầu tiên render page
   useEffect(() => {
@@ -99,7 +91,6 @@ export default function DanhMucCayTrong() {
   // function xử lý sự kiện thay đổi loại cây
   // set loại cây được chọn và danh sách giống cây tương ứng theo loại cây
   const handleChangeLoaiCay = (value) => {
-    setIsShowOptionGiongCay(true);
     const giongCayTheoLoaiCay = danhSachCay.giongCay.filter((el) => {
       return el.type === value;
     });
@@ -230,36 +221,53 @@ export default function DanhMucCayTrong() {
   return (
     // sử dụng các component có sẵn của Antd để chia layout trong page: Row (hàng), Col (cột)
     <div>
-      <h2>Danh mục cây trồng</h2>
-      <Row gutter={120}>
+      <h2 style={{ marginBottom: "32px" }}>Danh mục cây trồng</h2>
+      <Row gutter={20}>
         <Col span={8}>
-          <div>Nhóm cây</div>
-          <div className="group-select-add">
-            <Select
-              style={{ width: "100%" }}
-              onChange={handleChangeNhomCay}
-              value={cayDuocChon.nhomCay}
-              allowClear
-              open={isShowOption}
-              onClick={() => {
-                setIsShowOption(true);
-              }}
-            >
-              {danhSachCay.nhomCay.map((el) => (
-                <Option value={el.value}>
-                  <div className="select-label">
-                    <span>{el.label}</span>
-                    <span>
+          <Card
+            title={
+              <Row style={{ justifyContent: "space-between" }}>
+                <Col className="card-title">Nhóm cây</Col>
+                <Col>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setModalThemNhomCay(true);
+                    }}
+                  >
+                    Thêm nhóm cây
+                  </Button>
+                </Col>
+              </Row>
+            }
+          >
+            <List>
+              <VirtualList
+                height="60vh"
+                size="large"
+                bordered
+                data={danhSachCay.nhomCay}
+              >
+                {(item) => (
+                  <List.Item
+                    key={item.value}
+                    className={`list-item ${
+                      item.value === cayDuocChon.nhomCay ? "active-item" : ""
+                    }`}
+                    onClick={() => {
+                      handleChangeNhomCay(item.value);
+                    }}
+                  >
+                    <div>{item.label}</div>
+                    <div>
                       <img
                         className="select-icon"
                         src={deleteIcon}
                         alt=""
-                        onClick={(e) => {
-                          e.stopPropagation();
+                        onClick={() => {
                           setModalConfirm(true);
-                          setIsShowOption(false);
                           setCayDuocChon({
-                            nhomCay: el.value,
+                            nhomCay: item.value,
                             loaiCay: "",
                             giongCay: "",
                           });
@@ -269,60 +277,64 @@ export default function DanhMucCayTrong() {
                         className="select-icon"
                         src={editIcon}
                         alt=""
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setIsShowOption(false);
+                        onClick={() => {
                           setModalThemNhomCay(true);
                           setIsEdit(true);
-                          setIsShowOptionGiongCay(false);
                         }}
                       />
-                    </span>
-                  </div>
-                </Option>
-              ))}
-            </Select>
-            <img
-              className="add-icon"
-              src={addIcon}
-              alt=""
-              onClick={() => {
-                setModalThemNhomCay(true);
-                setIsShowOption(false);
-                setIsShowOptionGiongCay(false);
-              }}
-            />
-          </div>
+                    </div>
+                  </List.Item>
+                )}
+              </VirtualList>
+            </List>
+          </Card>
         </Col>
         <Col span={8}>
-          <div>Loại cây</div>
-          <div className="group-select-add">
-            <Select
-              style={{ width: "100%" }}
-              onChange={handleChangeLoaiCay}
-              value={cayDuocChon.loaiCay}
-              allowClear
-              open={isShowOption}
-              onClick={() => {
-                setIsShowOption(true);
-              }}
-            >
-              {danhSachCayDuocChon.loaiCay.map((el) => (
-                <Option value={el.value}>
-                  <div className="select-label">
-                    <span>{el.label}</span>
-                    <span>
+          <Card
+            title={
+              <Row style={{ justifyContent: "space-between" }}>
+                <Col className="card-title">Loại cây</Col>
+                <Col>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setModalThemLoaiCay(true);
+                    }}
+                  >
+                    Thêm loại cây
+                  </Button>
+                </Col>
+              </Row>
+            }
+          >
+            <List>
+              <VirtualList
+                height="60vh"
+                size="large"
+                bordered
+                data={danhSachCayDuocChon.loaiCay}
+              >
+                {(item) => (
+                  <List.Item
+                    key={item.value}
+                    className={`list-item ${
+                      item.value === cayDuocChon.loaiCay ? "active-item" : ""
+                    }`}
+                    onClick={() => {
+                      handleChangeLoaiCay(item.value);
+                    }}
+                  >
+                    <div>{item.label}</div>
+                    <div>
                       <img
                         className="select-icon"
                         src={deleteIcon}
                         alt=""
-                        onClick={(e) => {
-                          e.stopPropagation();
+                        onClick={() => {
                           setModalConfirm(true);
-                          setIsShowOption(false);
                           setCayDuocChon({
                             nhomCay: "",
-                            loaiCay: el.value,
+                            loaiCay: item.value,
                             giongCay: "",
                           });
                         }}
@@ -331,62 +343,66 @@ export default function DanhMucCayTrong() {
                         className="select-icon"
                         src={editIcon}
                         alt=""
-                        onClick={(e) => {
-                          e.stopPropagation();
+                        onClick={() => {
                           if (cayDuocChon.loaiCay !== "") {
                             setModalChinhSuaLoaiCay(true);
-                            setIsShowOption(false);
-                            setIsShowOptionGiongCay(false);
                           }
                         }}
                       />
-                    </span>
-                  </div>
-                </Option>
-              ))}
-            </Select>
-            <img
-              className="add-icon"
-              src={addIcon}
-              alt=""
-              onClick={() => {
-                setModalThemLoaiCay(true);
-                setIsShowOption(false);
-                setIsShowOptionGiongCay(false);
-              }}
-            />
-          </div>
+                    </div>
+                  </List.Item>
+                )}
+              </VirtualList>
+            </List>
+          </Card>
         </Col>
         <Col span={8}>
-          <div>Giống cây</div>
-          <div className="group-select-add">
-            <Select
-              style={{ width: "100%" }}
-              onChange={handleChangeGiongCay}
-              value={cayDuocChon.giongCay}
-              allowClear
-              open={isShowOptionGiongCay}
-              onClick={() => {
-                setIsShowOptionGiongCay(true);
-              }}
-            >
-              {danhSachCayDuocChon.giongCay.map((el) => (
-                <Option value={el.value}>
-                  <div className="select-label">
-                    <span>{el.label}</span>
-                    <span>
+          <Card
+            title={
+              <Row style={{ justifyContent: "space-between" }}>
+                <Col className="card-title">Giống cây</Col>
+                <Col>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setModalThemGiongCay(true);
+                    }}
+                  >
+                    Thêm giống cây
+                  </Button>
+                </Col>
+              </Row>
+            }
+          >
+            <List>
+              <VirtualList
+                height="60vh"
+                size="large"
+                bordered
+                data={danhSachCayDuocChon.giongCay}
+              >
+                {(item) => (
+                  <List.Item
+                    key={item.value}
+                    className={`list-item ${
+                      item.value === cayDuocChon.giongCay ? "active-item" : ""
+                    }`}
+                    onClick={() => {
+                      handleChangeGiongCay(item.value);
+                    }}
+                  >
+                    <div>{item.label}</div>
+                    <div>
                       <img
                         className="select-icon"
                         src={deleteIcon}
                         alt=""
-                        onClick={(e) => {
-                          e.stopPropagation();
+                        onClick={() => {
                           setModalConfirm(true);
-                          setIsShowOption(false);
                           setCayDuocChon({
                             nhomCay: "",
                             loaiCay: "",
-                            giongCay: el.value,
+                            giongCay: item.value,
                           });
                         }}
                       />
@@ -394,29 +410,16 @@ export default function DanhMucCayTrong() {
                         className="select-icon"
                         src={editIcon}
                         alt=""
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setIsShowOptionGiongCay(false);
+                        onClick={() => {
                           setModalChinhSuaGiongCay(true);
-                          setIsShowOption(false);
                         }}
                       />
-                    </span>
-                  </div>
-                </Option>
-              ))}
-            </Select>
-            <img
-              className="add-icon"
-              src={addIcon}
-              alt=""
-              onClick={() => {
-                setModalThemGiongCay(true);
-                setIsShowOptionGiongCay(false);
-                setIsShowOption(false);
-              }}
-            />
-          </div>
+                    </div>
+                  </List.Item>
+                )}
+              </VirtualList>
+            </List>
+          </Card>
         </Col>
       </Row>
       {/* các component thêm, sửa */}
