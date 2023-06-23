@@ -47,24 +47,31 @@ aside.ant-layout-sider.ant-layout-sider-dark,
   cursor: pointer;
 }
 
+.modal-custome .ant-modal-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 26px;
+}
+
 .content-modal-nhom-cay {
-  padding: 20px;
-  background-color: #61a9ff;
-  border: 1px solid #1d82fd;
+  padding: 10px;
 }
 
 .content-modal-nhom-cay .input-nhom-cay {
-  background-color: #d9d9d9;
-  padding: 10px 32px;
-  border-radius: 45px;
+  border-radius: 12px;
 }
 
 .input-nhom-cay .input {
   width: 80%;
 }
 
+.modal-confirm .ant-modal-footer {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
 .modal-confirm-content {
-  margin: 32px auto;
+  margin: 22px auto;
   display: flex;
   font-size: 18px;
   font-weight: 500;

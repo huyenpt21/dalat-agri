@@ -12,6 +12,8 @@ export default function ConfirmModal(props) {
       cancelText="Quay lại"
       cancelButtonProps={{ danger: true, type: "primary" }}
       closeIcon={<></>}
+      width="350px"
+      className="modal-confirm"
     >
       <div className="modal-confirm-content">
         <p>

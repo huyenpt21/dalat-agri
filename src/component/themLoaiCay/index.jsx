@@ -65,6 +65,7 @@ export default function ThemLoaiCay(props) {
         width="800px"
         okText="Lưu thông tin"
         cancelText="Trở về"
+        className="modal-custome"
       >
         <div className="content-modal-loai-cay">
           {/* sử dụng Form / Form.Item của Antd để xây dựng form lấy dữ liệu */}

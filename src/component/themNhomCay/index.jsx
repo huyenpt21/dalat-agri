@@ -10,14 +10,14 @@ export default function ThemNhomCay(props) {
 
   // mỗi lần mở component sẽ lấy thông tin nhóm cây (kể cả khi chọn lại nhóm cây)
   useEffect(() => {
-    if (modalConfirm === false) {
+    if (props.nhomCayId) {
       const danhSachCay = JSON.parse(localStorage.getItem("danhSachCay"));
       const thongTinNhomCay = danhSachCay.nhomCay.find((el) => {
         return el.value === props.nhomCayId;
       });
       form.setFieldValue("nhomCay", thongTinNhomCay?.label);
     }
-  });
+  }, [form, modalConfirm, props.nhomCayId]);
 
   const handleSaveModalNhomCay = () => {
     setModalConfirm(true);
@@ -59,10 +59,12 @@ export default function ThemNhomCay(props) {
       localStorage.setItem("danhSachCay", JSON.stringify(danhSachCayMoi));
     }
     setModalConfirm(false);
+    form.resetFields();
     props.onCancel();
   };
 
   const handleCancel = () => {
+    form.resetFields();
     setModalConfirm(false);
   };
   return (
@@ -76,17 +78,17 @@ export default function ThemNhomCay(props) {
           form.resetFields();
         }}
         title="Thêm nhóm cây"
-        width="800px"
+        width="600px"
         okText="Lưu thông tin"
         cancelText="Trở về"
+        className="modal-custome"
       >
         <div className="content-modal-nhom-cay">
-          <h3>Thông tin nhóm</h3>
           {/* sử dụng Form / Form.Item của Antd để xây dựng form lấy dữ liệu */}
-          <Form layout="horizontal" form={form}>
+          <Form layout="vertical" form={form}>
             <div className="input-nhom-cay">
-              <Form.Item label="1. Tên nhóm" name="nhomCay">
-                <Input />
+              <Form.Item name="nhomCay">
+                <Input placeholder="Tên nhóm cây" size="large" />
               </Form.Item>
             </div>
           </Form>

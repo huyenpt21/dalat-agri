@@ -12,7 +12,7 @@ export default function ChinhSuaGionCay(props) {
 
   // mỗi lần mở component sẽ lấy thông tin giống cây (kể cả khi chọn lại giống cây)
   useEffect(() => {
-    if (modalConfirm === false) {
+    if (props.giongCayId) {
       const thongTinGiongCayLocal = JSON.parse(
         localStorage.getItem("thongTinGiongCay")
       );
@@ -24,7 +24,7 @@ export default function ChinhSuaGionCay(props) {
         form.setFieldsValue(thongTinGiongCay);
       }
     }
-  });
+  }, [form, props.giongCayId]);
 
   const handleSaveModalGiongCay = () => {
     setModalConfirm(true);

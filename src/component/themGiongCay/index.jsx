@@ -8,7 +8,7 @@ export default function ThemGionCay(props) {
   const [modalConfirm, setModalConfirm] = useState(false);
 
   // dùng hook useForm của Antd để lấy dữ liệu từ form
-  const [form] = useForm();
+  const [form] = useForm(null);
 
   const handleSaveModalGiongCay = () => {
     setModalConfirm(true);
@@ -20,7 +20,7 @@ export default function ThemGionCay(props) {
     const danhSachCayMoi = {
       ...danhSachCay,
       giongCay: [
-        ...danhSachCay.loaiCay,
+        ...danhSachCay.giongCay,
         {
           label: form.getFieldValue("tenGiongCay"),
           value: form.getFieldValue("maGiong"),
@@ -42,9 +42,9 @@ export default function ThemGionCay(props) {
       "thongTinGiongCay",
       JSON.stringify([...thongTinCayLocal, thongTinGiongCayMoi])
     );
-
     setModalConfirm(false);
     props.onCancel();
+    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -64,6 +64,7 @@ export default function ThemGionCay(props) {
         width="800px"
         okText="Lưu thông tin"
         cancelText="Trở về"
+        className="modal-custome"
       >
         <div className="content-modal-loai-cay">
           {/* sử dụng Form / Form.Item của Antd để xây dựng form lấy dữ liệu */}

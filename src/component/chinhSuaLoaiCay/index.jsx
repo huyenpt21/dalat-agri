@@ -19,7 +19,7 @@ export default function ChinhSuaLoaiCay(props) {
 
   // mỗi lần mở component sẽ lấy thông tin loại cây (kể cả khi chọn lại loại cây)
   useEffect(() => {
-    if (modalConfirm === false) {
+    if (props.loaiCayId) {
       const thongTinLoaiCayLocal = JSON.parse(
         localStorage.getItem("thongTinLoaiCay")
       );
@@ -31,7 +31,7 @@ export default function ChinhSuaLoaiCay(props) {
         form.setFieldsValue(thongTinLoaiCay);
       }
     }
-  });
+  }, [form, props.loaiCayId]);
 
   const handleSaveModalNhomCay = () => {
     setModalConfirm(true);
@@ -77,6 +77,7 @@ export default function ChinhSuaLoaiCay(props) {
 
     localStorage.setItem("thongTinLoaiCay", JSON.stringify(thongTinCayMoi));
     setModalConfirm(false);
+    form.resetFields();
     props.onCancel();
   };
   const handleCancel = () => {

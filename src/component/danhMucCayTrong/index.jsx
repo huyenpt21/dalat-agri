@@ -91,6 +91,7 @@ export default function DanhMucCayTrong() {
   // function xử lý sự kiện thay đổi loại cây
   // set loại cây được chọn và danh sách giống cây tương ứng theo loại cây
   const handleChangeLoaiCay = (value) => {
+    console.log(333, value);
     const giongCayTheoLoaiCay = danhSachCay.giongCay.filter((el) => {
       return el.type === value;
     });
@@ -141,6 +142,11 @@ export default function DanhMucCayTrong() {
   // function xử lý khi chọn quay lại trong modal confirm xóa
   const handleCancleModalNhomCay = () => {
     setModalThemNhomCay(false);
+    setCayDuocChon({
+      nhomCay: "",
+      loaiCay: "",
+      giongCay: "",
+    });
     setIsEdit(false);
   };
 
@@ -218,6 +224,8 @@ export default function DanhMucCayTrong() {
     }
   };
 
+  console.log(345, cayDuocChon.loaiCay, cayDuocChon.nhomCay);
+
   return (
     // sử dụng các component có sẵn của Antd để chia layout trong page: Row (hàng), Col (cột)
     <div>
@@ -232,6 +240,11 @@ export default function DanhMucCayTrong() {
                   <Button
                     type="primary"
                     onClick={() => {
+                      setCayDuocChon({
+                        nhomCay: "",
+                        loaiCay: "",
+                        giongCay: "",
+                      });
                       setModalThemNhomCay(true);
                     }}
                   >
@@ -445,7 +458,14 @@ export default function DanhMucCayTrong() {
       {/* modal chỉnh sửa loại cây */}
       <ChinhSuaLoaiCay
         open={modalChinhSuaLoaiCay}
-        onCancel={() => setModalChinhSuaLoaiCay(false)}
+        onCancel={() => {
+          setModalChinhSuaLoaiCay(false);
+          setCayDuocChon((prev) => ({
+            nhomCay: prev.nhomCay,
+            loaiCay: "",
+            giongCay: "",
+          }));
+        }}
         nhomCay={cayDuocChon.nhomCay}
         loaiCayId={cayDuocChon.loaiCay}
       />
@@ -453,14 +473,28 @@ export default function DanhMucCayTrong() {
       {/* modal thêm giống cây */}
       <ThemGionCay
         open={modalThemGiongCay}
-        onCancel={() => setModalThemGiongCay(false)}
+        onCancel={() => {
+          setModalThemGiongCay(false);
+          setCayDuocChon((prev) => ({
+            nhomCay: prev.nhomCay,
+            loaiCay: prev.loaiCay,
+            giongCay: "",
+          }));
+        }}
         loaiCay={cayDuocChon.loaiCay}
       />
 
       {/* modal chỉnh sửa giống cây */}
       <ChinhSuaGionCay
         open={modalChinhSuaGiongCay}
-        onCancel={() => setModalChinhSuaGiongCay(false)}
+        onCancel={() => {
+          setModalChinhSuaGiongCay(false);
+          setCayDuocChon((prev) => ({
+            nhomCay: prev.nhomCay,
+            loaiCay: prev.loaiCay,
+            giongCay: "",
+          }));
+        }}
         loaiCay={cayDuocChon.loaiCay}
         giongCayId={cayDuocChon.giongCay}
       />
