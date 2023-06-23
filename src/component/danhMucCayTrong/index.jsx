@@ -91,7 +91,6 @@ export default function DanhMucCayTrong() {
   // function xử lý sự kiện thay đổi loại cây
   // set loại cây được chọn và danh sách giống cây tương ứng theo loại cây
   const handleChangeLoaiCay = (value) => {
-    console.log(333, value);
     const giongCayTheoLoaiCay = danhSachCay.giongCay.filter((el) => {
       return el.type === value;
     });
@@ -223,8 +222,6 @@ export default function DanhMucCayTrong() {
       );
     }
   };
-
-  console.log(345, cayDuocChon.loaiCay, cayDuocChon.nhomCay);
 
   return (
     // sử dụng các component có sẵn của Antd để chia layout trong page: Row (hàng), Col (cột)
